@@ -1,0 +1,336 @@
+%==============================常用宏包、环境===========================%
+\documentclass[twocolumn,a4]{article}
+\usepackage{xeCJK} % For Chinese characters
+\usepackage{amsmath, amsthm}
+\usepackage{listings,xcolor}
+\usepackage{geometry} % 设置页边距
+\usepackage{fontspec}
+\usepackage{graphicx}
+\usepackage{fancyhdr} % 自定义页眉页脚
+\setsansfont{Consolas} % 设置英文字体
+\setmonofont[Mapping={}]{Consolas} % 英文引号之类的正常显示，相当于设置英文字体
+\geometry{left=1cm,right=1cm,top=2cm,bottom=0.5cm} % 页边距
+\setlength{\columnsep}{30pt}
+\newcommand{\addcpp}[1]{\input{cpp/#1}} 
+% \setlength\columnseprule{0.4pt} % 分割线
+%==============================常用宏包、环境===========================%
+
+%========================页眉、页脚、代码格式设置=======================%
+% 页眉、页脚设置
+\pagestyle{fancy}
+% \lhead{CUMTB}
+\lhead{\CJKfamily{hei} USST ACM-ICPC Template}
+\chead{}
+% \rhead{Page \thepage}
+\rhead{\CJKfamily{hei} 第 \thepage 页}
+\lfoot{} 
+\cfoot{}
+\rfoot{}
+\renewcommand{\headrulewidth}{0.4pt} 
+\renewcommand{\footrulewidth}{0.4pt}
+
+% 代码格式设置
+\lstset{
+    language    = c++,
+    numbers     = left,
+    numberstyle = \tiny,
+    breaklines  = true,
+    captionpos  = b,
+    tabsize     = 4,
+    frame       = single,
+    columns     = fullflexible,
+    commentstyle = \color[RGB]{0,128,0},
+	keywordstyle ={
+		\color[RGB]{0,51,153}
+		\fontspec{Consolas Bold}	
+	},
+    basicstyle   = \small\ttfamily,
+    stringstyle  = \color[RGB]{148,0,209}\ttfamily,
+	rulesepcolor = \color{red!20!green!20!blue!20},
+    showstringspaces = false,                    
+}
+%========================页眉、页脚、代码格式设置=======================%
+
+%===============================标题和目录==============================%
+\title{\CJKfamily{hei} \bfseries 上海理工大学ICPC校队模板}
+\author{HiedanoAkyuu、Oneman233、KR12138}
+\renewcommand{\today}{\number\year 年 \number\month 月 \number\day 日}
+
+\begin{document}\small
+\begin{titlepage}
+\maketitle
+\end{titlepage}
+
+\newpage
+\pagestyle{empty}
+\renewcommand{\contentsname}{目录}
+\tableofcontents
+\newpage\clearpage
+\newpage
+\pagestyle{fancy}
+\setcounter{page}{1}   %new page
+%===============================标题和目录==============================%
+
+%================================正文部分===============================%
+\section{字符串}
+	\subsection{KMP}
+		%\addcpp{}
+	\subsection{EX-KMP}
+		\addcpp{string/EX-KMP}
+	\subsection{Manacher}
+		%\addcpp{}
+	\subsection{串的最小表示}
+		%\addcpp{}
+	\subsection{后缀数组}
+		\subsubsection{倍增SA}
+			%\addcpp{}
+		\subsubsection{DC3}
+			%\addcpp{}
+	\subsection{回文自动机}
+		%\addcpp{}
+	\subsection{AC自动机	}
+		\subsubsection{多模匹配}
+			\addcpp{string/Aho-CorasickAutomaton}
+		\subsubsection{自动机上DP}
+			%\addcpp{}
+	\subsection{后缀自动机}
+		%\addcpp{}
+
+\section{计算几何}
+	\subsection{二维几何}
+		\addcpp{geometry/geometry-2D}
+	\subsection{三维几何}
+		%\addcpp{}
+	
+\section{图论}
+	\subsection{最短路}
+		\subsubsection{Dijkstra}
+			%\addcpp{}
+		\subsubsection{SPFA}
+			%\addcpp{}
+		\subsubsection{Floyd}
+			%\addcpp{}
+		\subsubsection{负环}
+			%\addcpp{}
+		\subsubsection{差分约束}
+			%\addcpp{}
+	\subsection{最小生成树}
+		\subsubsection{Prim}
+			%\addcpp{}
+		\subsubsection{Kruskal}
+			%\addcpp{}
+		\subsubsection{最小生成树计数}
+			%\addcpp{}
+		\subsubsection{次小生成树}
+			%\addcpp{}
+		\subsubsection{最小乘积生成树}
+			%\addcpp{}
+	\subsection{树的直径}
+		%\addcpp{}
+	\subsection{LCA}
+		\subsubsection{Tarjan离线}
+			%\addcpp{}
+		\subsubsection{倍增LCA}
+			%\addcpp{}
+	\subsection{无向图与有向图联通性}
+		\subsubsection{割点}
+			%\addcpp{}
+		\subsubsection{桥}
+			%\addcpp{}
+		\subsubsection{e-DCC}
+			%\addcpp{}
+		\subsubsection{v-DCC}
+			%\addcpp{}
+		\subsubsection{SCC}
+			%\addcpp{}
+		\subsubsection{2-SAT}
+			%\addcpp{}
+		\subsubsection{支配树}
+			%\addcpp{}
+	\subsection{二分图}
+		\subsubsection{最大匹配-匈牙利}		
+			%\addcpp{}
+		\subsubsection{带权匹配-KM}
+			%\addcpp{}
+		%\subsubsection{最小点覆盖}
+		%\subsubsection{最大独立集}
+		%\subsubsection{DAG最小路径点覆盖}
+	\subsection{网络流}
+		\subsubsection{最大流-Dinic}
+			%\addcpp{}
+		\subsubsection{最小费用最大流-Dij+Dinic}
+			%\addcpp{}
+		\subsubsection{上下界流}
+			%\addcpp{}
+		%\addcpp{}
+	\subsection{欧拉路}
+		%\addcpp{}
+	\subsection{Prufer序列}
+		%\addcpp{}
+
+\section{数据结构}
+	\subsection{树状数组}
+		%\addcpp{}
+	\subsection{线段树}
+		\subsubsection{多操作线段树}
+			%\addcpp{}
+		\subsubsection{吉司机线段树}
+			%\addcpp{}
+		\subsubsection{扫描线}
+			%\addcpp{}
+	\subsection{RMQ}
+		\subsubsection{一维}
+			%\addcpp{}
+		\subsubsection{两维}
+			%\addcpp{}
+	\subsection{树链剖分}
+		\subsubsection{点剖分}
+			%\addcpp{}
+		\subsubsection{边剖分}
+			%\addcpp{}
+	\subsection{平衡树}
+		\subsubsection{Treap}
+			%\addcpp{}
+		\subsubsection{Splay}
+			%\addcpp{}
+	\subsection{动态树}
+		%\addcpp{}
+	\subsection{主席树}
+		%\addcpp{}
+	\subsection{树套树}
+		\subsubsection{线段树套Treap}
+			%\addcpp{}
+		\subsubsection{线段树套树状数组}
+			%\addcpp{}
+	\subsection{K-D Tree}
+		%\addcpp{}
+	\subsection{分治}
+		\subsubsection{CDQ}
+			%\addcpp{}
+		\subsubsection{点分治}
+			%\addcpp{}
+		\subsubsection{dsu on tree}
+			%\addcpp{}
+		\subsubsection{整体二分}
+			%\addcpp{}
+	\subsection{分块}
+		\subsubsection{普通分块}
+			%\addcpp{}
+		\subsubsection{莫队}
+			%\addcpp{}
+	\subsection{线性基}
+		%\addcpp{}
+	\subsection{珂朵莉树}
+		%\addcpp{}
+	\subsection{跳舞链}
+		%\addcpp{}
+
+\section{动态规划}
+	\subsection{SOS}
+		%\addcpp{}
+	\subsection{动态DP}
+		%\addcpp{}
+	\subsection{插头DP}
+		%\addcpp{}
+
+\section{数学}
+	\subsection{矩阵类}
+		%\addcpp{}
+	\subsection{质数筛}
+		\subsubsection{埃筛}
+			%\addcpp{}
+		\subsubsection{线筛}
+			%\addcpp{}
+	\subsection{质数判定}
+		\subsubsection{Miller Rabin}
+			%\addcpp{}
+	\subsection{质因数分解}
+		\subsubsection{Pollard-Rho}
+			%\addcpp{}
+	\subsection{逆元}
+		\subsubsection{EX-GCD求逆元}
+			%\addcpp{}
+		\subsubsection{线性筛逆元}
+			%\addcpp{}
+		\subsubsection{阶乘逆元}
+			%\addcpp{}
+	\subsection{欧拉函数}
+		\subsubsection{欧拉线筛}
+			%\addcpp{}
+		\subsubsection{求单个数的欧拉函数}
+			%\addcpp{}
+		\subsubsection{欧拉降幂}
+			%\addcpp{}
+		\subsubsection{一般积性函数求法}
+			%\addcpp{}
+	\subsection{EX-GCD}
+		%\addcpp{}
+	\subsection{CRT}
+		%\addcpp{}	
+	\subsection{N次剩余}
+		%\addcpp{}
+	\subsection{数论分块}
+		%\addcpp{}
+	\subsection{高斯消元}
+		\subsubsection{普通消元}
+			%\addcpp{}
+		\subsubsection{异或方程组消元}
+			%\addcpp{}
+	\subsection{莫比乌斯反演}
+		\subsubsection{莫比乌斯函数}
+			%\addcpp{}
+		\subsubsection{杜教筛}
+			%\addcpp{}
+		\subsubsection{洲阁筛}
+			%\addcpp{}
+		\subsubsection{min25筛}
+			%\addcpp{}
+	\subsection{BSGS}
+		%\addcpp{}
+	\subsection{FFT}
+		%\addcpp{}
+	\subsection{FWT}
+		%\addcpp{}
+	\subsection{NTT}
+		%\addcpp{}
+	\subsection{数值计算}
+		\subsubsection{辛普森}
+			%\addcpp{}
+		\subsubsection{自适应辛普森}
+			%\addcpp{}
+	\subsection{康拓展开}
+		%\addcpp{}
+	\subsection{卢卡斯定理}
+		%\addcpp{}
+
+\section{其他}
+	\subsection{快读快写}
+		%\addcpp{}
+	\subsection{约瑟夫环}
+		%\addcpp{}
+	\subsection{悬线法}
+		%\addcpp{}
+	\subsection{蔡勒公式}
+		%\addcpp{}
+	\subsection{三角公式}
+		%\addcpp{}
+	\subsection{海伦公式}
+		%\addcpp{}
+	\subsection{匹克定理}
+		%\addcpp{}	
+	\subsection{组合计数}
+		\subsubsection{计数原理}
+			%\addcpp{}
+		\subsubsection{卡特兰数}
+			%\addcpp{}
+		\subsubsection{Polya}
+			%\addcpp{}
+		\subsubsection{二项式反演公式}
+			%\addcpp{}
+		\subsubsection{斯特林反演公式}
+			%\addcpp{}
+		\subsubsection{组合数恒等式}
+			%\addcpp{}
+			
+%==============================正文部分==============================%
+\end{document}
