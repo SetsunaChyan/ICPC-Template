@@ -1,6 +1,6 @@
 ### 分锅
 
-HiedanoAkyuu: 字符串、数据结构、几何
+HiedanoAkyuu: 字符串、数据结构、几何、网络流
 
 Oneman233: 图论、动态规划
 
