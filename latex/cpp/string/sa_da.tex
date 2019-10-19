@@ -1,0 +1,65 @@
+\begin{lstlisting}
+#include <bits/stdc++.h>
+using namespace std;
+
+/*
+    str[0..len-1] 原串
+    sa[1..len] 排名第i的后缀的下标[1..len]
+    Rank[1..len] 从i开始的后缀的排名[1..len]
+    height[1..len] 排名第i的后缀与排名第i-1的后缀的lcp
+    i开始的后缀与j开始的后缀的lcp (Rank[i]<Rank[j])
+    min{height[Rank[i]+1..Rank[j]]}
+*/
+
+const int MAXN=100005;
+const int inf=0x3f3f3f3f;
+int wa[MAXN],wb[MAXN],wv[MAXN],wz[MAXN],sa[MAXN],Rank[MAXN],height[MAXN];
+char str[MAXN];
+
+inline bool cmp(int *r,int a,int b,int l){return r[a]==r[b]&&r[a+l]==r[b+l];}
+
+void da(const char r[],int sa[],int n,int m)
+{
+    int i,j,p,*x=wa,*y=wb,*t;
+    for(i=0;i<m;i++) wz[i]=0;
+    for(i=0;i<n;i++) wz[x[i]=r[i]]++;
+    for(i=1;i<m;i++) wz[i]+=wz[i-1];
+    for(i=n-1;i>=0;i--) sa[--wz[x[i]]]=i;
+    for(j=1,p=1;p<n;j*=2,m=p)
+    {
+        for(p=0,i=n-j;i<n;i++) y[p++]=i;
+        for(i=0;i<n;i++) if(sa[i]>=j) y[p++]=sa[i]-j;
+        for(i=0;i<n;i++) wv[i]=x[y[i]];
+        for(i=0;i<m;i++) wz[i]=0;
+        for(i=0;i<n;i++) wz[wv[i]]++;
+        for(i=1;i<m;i++) wz[i]+=wz[i-1];
+        for(i=n-1;i>=0;i--) sa[--wz[wv[i]]]=y[i];
+        for(t=x,x=y,y=t,p=1,x[sa[0]]=0,i=1;i<n;i++)
+            x[sa[i]]=cmp(y,sa[i-1],sa[i],j)?p-1:p++;
+    }
+}
+
+void calheight(const char *r,int *sa,int n)
+{
+    int i,j,k=0;
+    for(i=1;i<=n;i++) Rank[sa[i]]=i;
+    for(i=0;i<n;height[Rank[i++]]=k)
+    for(k?k--:0,j=sa[Rank[i]-1];r[i+k]==r[j+k];k++);
+    for(int i=n;i>=1;--i) sa[i]++,Rank[i]=Rank[i-1];
+}
+
+int main()
+{
+    scanf("%s",str);
+    int len=strlen(str);
+    da(str,sa,len+1,130); //字符的值域
+    calheight(str,sa,len);
+    for(int i=1;i<=len;i++)
+        printf("sa[%d] %d\n",i,sa[i]);
+    for(int i=1;i<=len;i++)
+        printf("Rank[%d] %d\n",i,Rank[i]);
+    for(int i=1;i<=len;i++)
+        printf("height[%d] %d\n",i,height[i]);
+    return 0;
+}
+\end{lstlisting}
