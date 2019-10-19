@@ -1,0 +1,47 @@
+\begin{lstlisting}
+#include <bits/stdc++.h>
+using namespace std;
+
+const int MAXN=1000005;
+char s1[MAXN],s2[MAXN];
+int nxt[MAXN];
+
+/*
+    nxt[i] s2[i-x..i-1]=s2[0..x-1]且x最大
+    即s2[0..i]的真前缀与真后缀的最大匹配
+    "ABAAB\0"=>[-1 0 0 1 1 2]
+*/
+
+void get_fail(char *s,int l)
+{
+	int i=0,j;
+    j=nxt[0]=-1;
+	while(i<l)
+	{
+		while(~j&&s[j]!=s[i]) j=nxt[j];
+		nxt[++i]=++j;
+	}
+}
+
+void kmp(char *s1,char *s2,int l1,int l2)
+{
+	int i=0,j=0;
+	get_fail(s2,l2);
+	while(i<l1)
+	{
+		while(~j&&s1[i]!=s2[j]) j=nxt[j];
+		i++,j++;
+		if(j>=l2); //匹配上了
+	}
+}
+
+int main()
+{
+	scanf("%s%s",s1,s2);
+	int l1=strlen(s1),l2=strlen(s2);
+	kmp(s1,s2,l1,l2);
+	for(int i=0;i<=l2;i++)
+        printf("%d ",nxt[i]);
+	return 0;
+}
+\end{lstlisting}
