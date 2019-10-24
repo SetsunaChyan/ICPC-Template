@@ -1,0 +1,99 @@
+\begin{lstlisting}
+#include <bits/stdc++.h>
+//luogu P2341
+using namespace std;
+
+/*
+	scc表示某标号的强连通分量中的点，co表示某个点属于哪个强连通分量
+	gao函数是重建图，按照题意寻找有没有链
+*/
+
+const int N=10005;
+
+int n,m,x[N*5],y[N*5];
+vector<int> e[N],scc[N];
+int co[N],color=0;
+stack<int> s;
+bool vis[N];
+int dfn[N],low[N],timer=0;
+
+void tarjan(int u)
+{
+	dfn[u]=low[u]=++timer;
+	s.push(u);
+	vis[u]=1;
+	for(auto v:e[u])
+	{
+		if(!dfn[v])
+		{
+			tarjan(v);
+			low[u]=min(low[u],low[v]);
+		}
+		else if(vis[v]) low[u]=min(low[u],dfn[v]);
+	}
+	if(low[u]==dfn[u])
+	{
+		++color;
+		int t;
+		do
+		{
+			t=s.top();
+			s.pop();
+			co[t]=color;
+			vis[t]=0;
+			scc[color].push_back(t);
+		}
+		while(u!=t);
+	}
+}
+
+int f[N];
+int _find(int x)
+{
+	if(x!=f[x]) f[x]=_find(f[x]);
+	return f[x];
+}
+void _merge(int x,int y)
+{
+	x=_find(x),y=_find(y);
+	if(x!=y) f[x]=y;
+}
+
+int d[N];
+void gao()
+{
+	for(int i=1;i<=color;++i)
+		f[i]=i;
+	for(int i=1;i<=m;++i)
+	{
+		if(co[x[i]]!=co[y[i]])
+			_merge(co[x[i]],co[y[i]]),
+			d[co[x[i]]]++;
+	}
+	int F=_find(1);
+	for(int i=1;i<=color;++i)
+		if(_find(i)!=F) {puts("0");return;}
+	int ans=0,tmp=0;
+	for(int i=1;i<=color;++i)
+	{
+		if(d[i]==0)
+			ans+=scc[i].size(),tmp++;
+	}
+	if(tmp>1) ans=0;
+	printf("%d",ans);
+}
+
+int main()
+{
+	scanf("%d%d",&n,&m);
+	for(int i=1;i<=m;++i)
+	{
+		scanf("%d%d",&x[i],&y[i]);
+		e[x[i]].push_back(y[i]);
+	}
+	for(int i=1;i<=n;++i)
+		if(!dfn[i]) tarjan(i);
+	gao();
+	return 0;
+}
+\end{lstlisting}
