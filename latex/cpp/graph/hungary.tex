@@ -1,0 +1,53 @@
+\begin{lstlisting}
+#include <bits/stdc++.h>
+//luogu P3386
+using namespace std;
+
+/*
+	hungary每一次遍历必须要清空vis数组
+*/
+
+const int N=1005;
+
+vector<int> e[N];
+bool vis[N];
+int match[N],rematch[N];
+
+bool dfs(int u)
+{
+	for(auto v:e[u])
+	{
+		if(!vis[v]){
+			vis[v]=1;
+			if(match[v]==0||dfs(match[v]))
+			{
+				match[v]=u;
+				rematch[u]=v;
+				return 1;
+			}
+		}
+	}
+	return 0;
+}
+
+int n,m,k;
+
+int main()
+{
+	scanf("%d%d%d",&n,&m,&k);
+	for(int i=1,x,y;i<=k;++i)
+	{
+		scanf("%d%d",&x,&y);
+		if(x>n||y>m) continue;
+		e[x].push_back(y);
+	}
+	int ans=0;
+	for(int i=1;i<=n;++i)
+	{
+		memset(vis,0,sizeof(vis));
+		if(dfs(i)) ans++;
+	}
+	printf("%d",ans);
+	return 0;
+}
+\end{lstlisting}
