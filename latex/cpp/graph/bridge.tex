@@ -1,0 +1,91 @@
+\begin{lstlisting}
+#include <bits/stdc++.h>
+#define mkp make_pair
+//uva796
+using namespace std;
+const int N=1000005;
+typedef pair<int,int> pii;
+inline int read(){
+    char ch=getchar();int s=0,w=1;
+    while(ch<48||ch>57){if(ch=='-')w=-1;ch=getchar();}
+    while(ch>=48&&ch<=57){s=(s<<1)+(s<<3)+ch-48;ch=getchar();}
+    return s*w;
+}
+inline void write(int x){
+    if(x<0)putchar('-'),x=-x;
+    if(x>9)write(x/10);
+    putchar(x%10+48);
+}
+
+int n;
+int dfn[N],low[N],timer=0;
+int fa[N];
+vector<int> e[N];
+vector<pii> ans;
+
+void tarjan(int u,int f)
+{
+	fa[u]=f;
+	dfn[u]=low[u]=++timer;
+	for(auto v:e[u])
+	{
+		if(!dfn[v])
+		{
+			tarjan(v,u);
+			low[u]=min(low[u],low[v]);
+			//if(dfn[u]<low[v]) is[u][v]=1;
+			//u is v's father
+		}
+		else if(v!=f) low[u]=min(low[u],dfn[v]);
+	}
+}
+
+void init()
+{
+	timer=0;
+	for(int i=0;i<n;++i) dfn[i]=low[i]=fa[i]=0;
+	for(int i=0;i<n;++i) e[i].clear();
+	ans.clear();
+}
+
+void gao()
+{
+	for(int i=0;i<n;++i)
+		if(!dfn[i]) tarjan(i,-1);
+	for(int i=0;i<n;++i)
+	{
+		int F=fa[i];
+		if(F!=-1&&dfn[F]<low[i])
+			ans.emplace_back(min(F,i),max(F,i));
+	}
+	sort(ans.begin(),ans.end());
+	printf("%d critical links\n",(int)ans.size());
+	for(auto i:ans)
+		printf("%d - %d\n",i.first,i.second);
+	puts("");
+}
+
+int main()
+{
+	while(~scanf("%d",&n))
+	{
+		if(n==0)
+		{
+			puts("0 critical links");
+			puts("");
+			continue;
+		}
+		init();
+		for(int i=0,x,y,z;i<n;++i)
+		{
+			scanf("%d (%d)",&x,&y);
+			for(int i=0;i<y;++i)
+				z=read(),
+				e[x].push_back(z),
+				e[z].push_back(x);
+		}
+		gao();
+	}
+	return 0;
+}
+\end{lstlisting}
