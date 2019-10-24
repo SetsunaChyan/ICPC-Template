@@ -1,0 +1,67 @@
+\begin{lstlisting}
+#include <bits/stdc++.h>
+//luogu P3366
+using namespace std;
+
+/*
+	prim/kruskal一定要注意解决重边
+*/
+
+const int N=5005;
+const int inf=0x3f3f3f3f;
+
+int n,m;
+int mp[N][N];
+int dis[N];
+
+int prim(int s)
+{
+	int sum=0;
+	int cnt=0;
+	for(int i=1;i<=n;++i)
+		dis[i]=mp[s][i];
+	cnt++;
+	while(1)
+	{
+		int mn=inf;
+		int now=-1;
+		for(int i=1;i<=n;++i)
+		{
+			if(dis[i]!=0&&dis[i]<mn)
+			{
+				mn=dis[i];
+				now=i;
+			}
+		}
+		if(now==-1) break;
+		sum+=dis[now];
+		dis[now]=0;
+		cnt++;
+		for(int i=1;i<=n;++i)
+		{
+			if(dis[i]!=0&&mp[now][i]<dis[i])
+				dis[i]=mp[now][i];
+		}
+	}
+	if(cnt<n) return -1;
+	else return sum;
+}
+
+int main()
+{
+	scanf("%d%d",&n,&m);
+	memset(mp,0x3f,sizeof(mp));
+	for(int i=1;i<=n;++i)
+		mp[i][i]=0;
+	for(int i=1,x,y,z;i<=m;++i)
+	{
+		scanf("%d%d%d",&x,&y,&z);
+		mp[x][y]=min(mp[x][y],z);
+		mp[y][x]=min(mp[y][x],z);
+	}
+	int ans=prim(1);
+	if(ans==-1) puts("orz");
+	else printf("%d",ans);
+	return 0;
+}
+\end{lstlisting}
