@@ -1,0 +1,88 @@
+\begin{lstlisting}
+#include <bits/stdc++.h>
+//jisuanke 41389
+
+/*
+	fail[x]：x节点失配之后跳转到不等于自身的最长后缀回文子串
+	len[x]：以x结尾的最长回文子串长度
+	diff[x]： 与”以x结尾的最长回文子串“本质不同的子串个数
+	same[x]：与”以x结尾的最长回文子串“本质相同的子串个数
+	(注意上面两个完全相反)
+	son[x][c]：编号为x的节点表示的回文子串在两边添加字符c之后变成的回文子串编号
+	s[x]：第x次添加的字符，s数组即原字符串
+	tot：总节点个数，节点编号由0到tot-1
+	last：最后一个新建立节点的编号
+	cur：当前节点在PAM上的父亲编号
+*/
+
+#define int long long
+using namespace std;
+const int N=1e6+5;
+
+struct PAM
+{
+	int tot,last,n,cur;
+	int fail[N],len[N],same[N],diff[N],son[N][26];
+	char s[N];
+	int get(int p,int x)
+	{
+		while(s[x-len[p]-1]!=s[x])
+			p=fail[p];
+		return p;
+	}
+	int newnode(int x)
+	{
+		len[tot]=x;
+		return tot++;
+	}
+	void build()
+	{
+		scanf("%s",s+1);
+		s[0]=-1,fail[0]=1,last=0;
+		newnode(0),newnode(-1);
+		for(n=1;s[n];++n)
+		{
+			s[n]-='a';
+			cur=get(last,n);
+			if(!son[cur][s[n]])
+			{
+				int now=newnode(len[cur]+2);
+				fail[now]=son[get(fail[cur],n)][s[n]];
+				diff[now]=diff[fail[diff[now]]]+1;
+				son[cur][s[n]]=now;
+			}
+			same[last=son[cur][s[n]]]++;
+		}
+		for(int i=tot-1;i>=0;--i)
+			same[fail[i]]+=same[i];
+	}
+}pam;
+
+int v[26],ans=0;
+void dfs(int x,int now)
+{
+	if(pam.len[x]>0) ans+=pam.same[x]*now;
+	for(int i=0;i<26;++i)
+	{
+		if(pam.son[x][i]!=0)
+		{
+			if(!v[i])
+			{
+				v[i]=1;
+				dfs(pam.son[x][i],now+1);
+				v[i]=0;
+			}
+			else dfs(pam.son[x][i],now);
+		}
+	}
+}
+
+signed main()
+{
+	pam.build();
+	dfs(0,0);//even string
+	dfs(1,0);//odd string
+	printf("%lld",ans);
+	return 0;
+}
+\end{lstlisting}
