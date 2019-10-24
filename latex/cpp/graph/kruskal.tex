@@ -1,0 +1,66 @@
+\begin{lstlisting}
+#include <bits/stdc++.h>
+//luogu P3366
+using namespace std;
+
+/*
+	prim/kruskal一定要注意解决重边
+*/
+
+const int N=200005;
+
+int n,m;
+struct node
+{
+	int x,y,z;
+}o[N];
+
+bool cmp(node a,node b)
+{
+	return a.z<b.z;
+}
+
+int f[5005];
+int _find(int x)
+{
+	if(x!=f[x]) f[x]=_find(f[x]);
+	return f[x];
+}
+void _merge(int x,int y)
+{
+	x=_find(x),y=_find(y);
+	if(x!=y) f[x]=y;
+}
+
+int kk()
+{
+	for(int i=1;i<=n;++i)
+		f[i]=i;
+	sort(o+1,o+1+m,cmp);
+	int sum=0;
+	for(int i=1;i<=m;++i)
+	{
+		if(_find(o[i].x)!=_find(o[i].y))
+		{
+			sum+=o[i].z;
+			_merge(o[i].x,o[i].y);
+		}
+	}
+	int tmp=_find(1);
+	for(int i=2;i<=n;++i)
+		if(_find(i)!=tmp)
+			return -1;
+	return sum;
+}
+
+int main()
+{
+	scanf("%d%d",&n,&m);
+	for(int i=1;i<=m;++i)
+		scanf("%d%d%d",&o[i].x,&o[i].y,&o[i].z);
+	int ans=kk();
+	if(ans==-1) puts("orz");
+	else printf("%d",ans);
+	return 0;
+}
+\end{lstlisting}
