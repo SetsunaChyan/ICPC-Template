@@ -1,0 +1,86 @@
+\begin{lstlisting}
+#include <bits/stdc++.h>
+//luogu P3203
+using namespace std;
+const int N=500005;
+
+int n,m,tot;
+int a[N],cnt[N],pos[N];
+int id[N],from[N],to[N];
+int o,x,y;
+
+void modify(int i)
+{
+	if(i+a[i]>n)
+	{
+		pos[i]=i;
+		cnt[i]=0;
+		return;
+	}
+	if(id[i]==id[i+a[i]])
+	{
+		pos[i]=pos[i+a[i]];
+		cnt[i]=cnt[i+a[i]]+1;
+	}
+	else
+	{
+		pos[i]=i+a[i];
+		cnt[i]=1;
+	}
+}
+
+void ask(int x)
+{
+	int p=x,res=0;
+	while(p!=pos[p])
+		res+=cnt[p],
+		p=pos[p];
+	printf("%d\n",res+1);
+}
+
+int main()
+{
+	scanf("%d",&n);
+	tot=(int)sqrt(n);
+	for(int i=1;i<=tot;++i)
+	{
+		from[i]=(i-1)*tot+1;
+		to[i]=i*tot;
+	}
+	if(to[tot]<n)
+	{
+		tot++;
+		from[tot]=to[tot-1];
+		to[tot]=n;
+	}
+	for(int i=1;i<=tot;++i)
+	{
+		for(int j=from[i];j<=to[i];++j)
+			id[j]=i;
+	}
+	for(int i=1;i<=n;++i)
+		scanf("%d",&a[i]);
+	for(int i=n;i>=1;--i)
+		modify(i);
+	scanf("%d",&m);
+	while(m--)
+	{
+		scanf("%d",&o);
+		if(o==2)
+		{
+			scanf("%d%d",&x,&y);
+			x++;
+			a[x]=y;
+			for(int i=x;i>=from[id[x]];--i)
+				modify(i);
+		}
+		else if(o==1)
+		{
+			scanf("%d",&x);
+			x++;;
+			ask(x);
+		}
+	}
+	return 0;
+}
+\end{lstlisting}
