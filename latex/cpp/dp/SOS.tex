@@ -1,4 +1,9 @@
 \begin{lstlisting}
+
+/*
+    (1<<N)-1-a[i]是a[i]的补集
+*/
+
 for(int i=0;i<(1<<N);i++) dp[i]=a[i];
 for(int i=0;i<N;i++)
     for(int mask=0;mask<(1<<N);mask++)
