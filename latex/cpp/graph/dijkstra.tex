@@ -1,0 +1,63 @@
+\begin{lstlisting}
+#include <bits/stdc++.h>
+#define mkp(a,b) make_pair(a,b)
+#define fst first
+#define snd second
+//luogu P4779
+using namespace std;
+typedef pair<int,int> pii;
+const int inf=0x3f3f3f3f;
+const int N=1000005;
+
+struct edge
+{
+	int y,v;
+	edge(int Y,int V):y(Y),v(V){}
+};
+vector<edge> e[N];
+void add(int x,int y,int v)
+{
+	e[x].push_back(edge(y,v));
+}
+
+int n,m,s;
+int dis[N];
+bool vis[N];
+
+void dij(int s)
+{
+	memset(dis,0x3f,sizeof(dis));
+	dis[s]=0;
+	priority_queue<pii,vector<pii>,greater<pii>> q;
+	q.push(mkp(0,s));
+	while(!q.empty())
+	{
+		int x=q.top().snd;
+		q.pop();
+		if(vis[x]) continue;
+		vis[x]=1;
+		for(auto y:e[x])
+		{
+			if(dis[x]+y.v<dis[y.y])
+			{
+				dis[y.y]=dis[x]+y.v;
+				q.push(mkp(dis[y.y],y.y));
+			}
+		}
+	}
+}
+
+int main()
+{
+	scanf("%d%d%d",&n,&m,&s);
+	for(int i=1,x,y,z;i<=m;++i)
+	{
+		scanf("%d%d%d",&x,&y,&z);
+		add(x,y,z);
+	}
+	dij(s);
+	for(int i=1;i<=n;++i)
+		printf("%d ",dis[i]==inf?2147483647:dis[i]);
+	return 0;
+}
+\end{lstlisting}
