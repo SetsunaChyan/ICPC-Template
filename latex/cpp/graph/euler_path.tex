@@ -1,0 +1,58 @@
+\begin{lstlisting}
+#include <bits/stdc++.h>
+//luogu P2731
+using namespace std;
+const int N=505;
+
+/*
+	euler_path一定要找到正确的起点
+*/
+
+int n;
+int mp[N][N];
+stack<int> st;
+int deg[N];
+
+void dfs(int x)
+{
+	for(int i=1;i<=500;++i)
+	{
+		if(mp[x][i])
+		{
+			mp[x][i]--;
+			mp[i][x]--;
+			dfs(i);
+		}
+	}
+	st.push(x);
+}
+
+int main()
+{
+	scanf("%d",&n);
+	for(int i=1,x,y;i<=n;++i)
+	{
+		scanf("%d%d",&x,&y);
+		mp[x][y]++;
+		mp[y][x]++;
+		deg[x]++;
+		deg[y]++;
+	}
+	int s=1;
+	for(int i=1;i<=500;++i)
+	{
+		if(deg[i]%2==1)
+		{
+			s=i;
+			break;
+		}
+	}
+	dfs(s);
+	while(!st.empty())
+	{
+		printf("%d\n",st.top());
+		st.pop();
+	}
+	return 0;
+}
+\end{lstlisting}
