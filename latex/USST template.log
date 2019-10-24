@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018/W32TeX) (preloaded format=xelatex 2018.12.12)  24 OCT 2019 15:39
+This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018/W32TeX) (preloaded format=xelatex 2018.12.12)  24 OCT 2019 15:42
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -946,7 +946,7 @@ Package: xeCJK-listings 2018/04/07 v3.7.0 xeCJK patch file for listings
 LaTeX Warning: Unused global option(s):
     [a4].
 
-(./USST template.aux)
+No file "USST template".aux.
 \openout1 = `"USST template.aux"'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 57.
@@ -1021,7 +1021,6 @@ LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
 (Font)                  OT1/cmtt/m/n --> TU/Consolas(1)/bx/n on input line 57.
 \c@lstlisting=\count285
-
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
 *geometry* verbose mode - [ preamble ] result:
@@ -1066,13 +1065,13 @@ LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
 [1
 
 
-] (./USST template.toc [1
-
-])
+]
+No file "USST template".toc.
 \tf@toc=\write3
 \openout3 = `"USST template.toc"'.
 
- [2
+[1
+
 
 ] (./cpp/string/KMP.tex
 *************************************************
@@ -1114,4 +1113,4 @@ LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
 . - 'italic small caps'  (m/itsc) with NFSS spec.: 
 . - 'bold italic' (bx/it) with NFSS spec.: <->"Consolas
 . Bold/BI/OT:script=latn;language=DFLT;"
-. - 'bold italic sma
+. - 'bold ita

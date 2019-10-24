@@ -1,0 +1,68 @@
+\begin{lstlisting}
+#include <bits/stdc++.h>
+//luogu P3385
+using namespace std;
+const int N=2005;
+
+int _,n,m,dis[N],cnt[N];
+bool vis[N];
+vector<int> e[N],v[N];
+void add(int x,int y,int z)
+{
+	e[x].push_back(y);
+	v[x].push_back(z);
+}
+
+bool spfa(int s)
+{
+	queue<int> q;
+	memset(dis,0x3f,sizeof(dis));
+	memset(vis,0,sizeof(vis));
+	memset(cnt,0,sizeof(cnt));
+	dis[s]=0;
+	vis[s]=cnt[s]=1;
+	q.push(1);
+	while(!q.empty())
+	{
+		int f=q.front();
+		q.pop();
+		vis[f]=0;
+		for(int i=0;i<e[f].size();++i)
+		{
+			int y=e[f][i];
+			if(dis[y]>dis[f]+v[f][i])
+			{
+				dis[y]=dis[f]+v[f][i];
+				if(!vis[y])
+				{
+					vis[y]=1;
+					q.push(y);
+					cnt[y]++;
+					if(cnt[y]>n) return 1;
+				}
+			}
+		}
+	}
+	return 0;
+}
+
+int main()
+{
+	scanf("%d",&_);
+	while(_--)
+	{
+		scanf("%d%d",&n,&m);
+		for(int i=1;i<=n;++i)
+			e[i].clear(),v[i].clear();
+		for(int i=1,x,y,z;i<=m;++i)
+		{
+			scanf("%d%d%d",&x,&y,&z);
+			if(z<0) add(x,y,z);
+			else add(x,y,z),add(y,x,z);
+		}
+		if(spfa(1)) puts("YE5");
+		else puts("N0");
+	}
+	return 0;
+}
+\end{lstlisting}
