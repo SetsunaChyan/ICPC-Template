@@ -1,0 +1,138 @@
+\begin{lstlisting}
+#include <bits/stdc++.h>
+#define int long long //be careful
+//CF896C
+using namespace std;
+
+/*
+	珂朵莉树的左右split顺序很重要，并且set集合一开始不要为空，否则会RE
+*/
+
+const int N=1000005;
+
+int qpow(int a,int b,int mod)
+{
+	int res=1,tmp=a%mod;
+	while(b)
+	{
+		if(b&1) res=res*tmp%mod;
+		tmp=tmp*tmp%mod;
+		b>>=1;
+	}
+	return res;
+}
+
+struct node
+{
+	int l,r;
+	mutable int v;
+	node(int L,int R=-1,int V=0):l(L),r(R),v(V){}
+	bool operator < (const node& o)const{return l<o.l;}
+};
+set<node> s;
+typedef set<node>::iterator it;
+
+it split(int pos)
+{
+	it i=s.lower_bound(node(pos));
+	if(i!=s.end()&&i->l==pos) return i;
+	--i;
+	int L=i->l,R=i->r,V=i->v;
+	s.erase(i);
+	s.insert(node(L,pos-1,V));
+	return s.insert(node(pos,R,V)).first;
+}
+
+void assign(int l,int r,int val)
+{
+	it ir=split(r+1),il=split(l);
+	s.erase(il,ir);
+	s.insert(node(l,r,val));
+}
+
+void add(int l,int r,int val)
+{
+	it ir=split(r+1),il=split(l);
+	for(;il!=ir;il++)
+		il->v+=val;
+}
+
+int rk(int l,int r,int k)
+{
+	vector<pair<int,int>> v;
+	it ir=split(r+1),il=split(l);
+	for(;il!=ir;il++)
+		v.emplace_back(il->v,il->r-il->l+1);
+	sort(v.begin(),v.end());
+	for(int i=0;i<v.size();++i)
+	{
+		k-=v[i].second;
+		if(k<=0) return v[i].first;
+	}
+	return -1; //can't find
+}
+
+int sum(int l,int r,int ex,int mod)
+{
+	it ir=split(r+1),il=split(l);
+	int res=0;
+	for(;il!=ir;il++)
+		res=(res+qpow(il->v,ex,mod)*(il->r-il->l+1)%mod)%mod;
+	return res;
+}
+
+inline int read(){
+    char ch=getchar();int s=0,w=1;
+    while(ch<48||ch>57){if(ch=='-')w=-1;ch=getchar();}
+    while(ch>=48&&ch<=57){s=(s<<1)+(s<<3)+ch-48;ch=getchar();}
+    return s*w;
+}
+inline void write(int x){
+    if(x<0)putchar('-'),x=-x;
+    if(x>9)write(x/10);
+    putchar(x%10+48);
+}
+//Fast I/O
+
+int n,m,seed,vmax,a[N];
+int rnd()
+{
+	int ret=seed;
+	seed=(seed*7+13)%1000000007;
+	return ret;
+}
+
+signed main()
+{
+	n=read(),m=read(),seed=read(),vmax=read();
+	for(int i=1;i<=n;++i)
+	{
+		a[i]=(rnd()%vmax)+1;
+		s.insert(node(i,i,a[i]));
+	}
+	for(int i=1;i<=m;++i)
+	{
+		int op=(rnd()%4)+1;
+		int l=(rnd()%n)+1;
+		int r=(rnd()%n)+1;
+		if(l>r) swap(l,r);
+		int x,y;
+		if(op==3) x=(rnd()%(r-l+1))+1;
+		else x=(rnd()%vmax)+1;
+		if(op==4) y=(rnd()%vmax)+1;
+		switch(op)
+		{
+			case 1:
+				add(l,r,x);break;
+			case 2:
+				assign(l,r,x);break;
+			case 3:
+				write(rk(l,r,x)),puts("");break;
+			case 4:
+				write(sum(l,r,x,y)),puts("");break;
+		}
+			
+	}
+	return 0;
+}
+\end{lstlisting}
