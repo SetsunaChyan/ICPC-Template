@@ -1,0 +1,72 @@
+\begin{lstlisting}
+#include <bits/stdc++.h>
+#define int long long
+//luogu P3469
+
+/*
+	tarjan求割点的算法中，如果不保证连通性，应该使用被注释掉的遍历方法
+	part数组储存了被这个割点分成的不同的几块各自的大小
+*/
+
+using namespace std;
+const int N=100005;
+
+int n,m,x,y;
+vector<int> e[N],part[N];
+bool is[N];
+int dfn[N],low[N],timer=0;
+int sz[N];
+
+void tarjan(int u,int f)
+{
+	dfn[u]=low[u]=++timer;
+	sz[u]++;//
+	int son=0,tmp=0;
+	for(auto v:e[u])
+	{
+		if(dfn[v]==0)
+		{
+			tarjan(v,u);
+			sz[u]+=sz[v];//
+			low[u]=min(low[u],low[v]);
+			if(low[v]>=dfn[u]&&u!=f)
+			{
+				is[u]=1;
+				tmp+=sz[v];//
+				part[u].push_back(sz[v]);//
+			}
+			if(u==f) son++;
+		}
+		low[u]=min(low[u],dfn[v]);
+	}
+	if(son>=2&&u==f) is[u]=1;//point on the top
+	if(is[u]&&n-tmp-1!=0)
+		part[u].push_back(n-tmp-1);//
+}
+
+signed main()
+{
+	scanf("%lld%lld",&n,&m);
+	for(int i=1;i<=m;++i)
+	{
+		scanf("%lld%lld",&x,&y);
+		e[x].push_back(y),e[y].push_back(x);
+	}
+	/*
+	for(int i=1;i<=n;++i)
+		if(!dfn[i]) tarjan(i,i);
+	*/
+	tarjan(1,0);
+	for(int i=1;i<=n;++i)
+	{
+		if(!is[i]) printf("%lld\n",2*(n-1));
+		else{
+			int tmp=0;
+			for(auto j:part[i])
+				tmp+=j*(j-1);
+			printf("%lld\n",n*(n-1)-tmp);
+		}
+	}
+	return 0;
+}
+\end{lstlisting}
