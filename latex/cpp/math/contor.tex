@@ -1,0 +1,68 @@
+\begin{lstlisting}
+//contor展开
+int bit[maxn];
+void add(int x,int y)
+{
+    for(;x<=n;x+=lowbit(x)) bit[x]+=y; 
+} 
+
+int sum(int x)
+{
+    int res=0;
+    for(;x>0;x-=lowbit(x)) res+=bit[x];
+    return res;
+}
+
+int contor(vector& p)
+{
+    int ans=0;
+    rre(i,p.size()-1,0)
+    {
+        add(p[i],1);
+        int cnt=sum(p[i]-1);
+        ans=(ans+cnt*fac[p.size()-i-1]%MOD)%MOD;
+    }
+    return ans+1;
+}
+
+//逆contor展开
+int k,s[50005];
+int tr[200005];
+
+void up(int p) {tr[p]=tr[ll(p)]+tr[rr(p)];}
+
+void build(int p=1,int l=1,int r=k)
+{
+    if(l==r)
+    {
+        tr[p]=1;
+        return;
+    }
+    int m=mm(l,r);
+    build(ll(p),l,m);
+    build(rr(p),m+1,r);
+    up(p);
+}
+
+int ask(int cnt,int p=1,int l=1,int r=k)
+{
+    if(l==r)
+    {
+        tr[p]=0;
+        return l;
+    }
+    int m=mm(l,r);
+    int ans=-1;
+    if(cnt<=tr[ll(p)]) ans=ask(cnt,ll(p),l,m);
+    else ans=ask(cnt-tr[ll(p)],rr(p),m+1,r);
+    up(p);
+    return ans;
+}
+
+vei recontor()
+{
+    vei v(k+1);
+    re(i,1,k) v[i]=ask(s[i]+1);
+    return v;
+}
+\end{lstlisting}
