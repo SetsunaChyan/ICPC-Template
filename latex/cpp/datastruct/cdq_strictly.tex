@@ -1,0 +1,64 @@
+\begin{lstlisting}
+#include <bits/stdc++.h>
+using namespace std;
+
+/*
+    严格大于的三维偏序
+	无法处理重复的数字，但是注意"大于"的神秘排序方法
+*/
+
+const int N=500005;
+
+int n,c[N];
+struct node{
+	int a,b,c,cnt;
+}o[N],t[N];
+
+bool cmp(node a,node b){
+	if(a.a!=b.a) return a.a>b.a;
+	else return a.c<b.c;
+}
+
+inline int lowbit(int x){return x&-x;}
+int tr[N];
+void add(int x,int y){
+	for(;x<=n;x+=lowbit(x)) tr[x]+=y;
+}
+int sum(int x){
+	int res=0;
+	for(;x;x-=lowbit(x)) res+=tr[x];
+	return res;
+}
+
+void cdq(int l,int r){
+	if(l==r) return;
+	int m=(l+r)/2;
+	cdq(l,m);
+	cdq(m+1,r);
+	int p=l,q=m+1,tot=l;
+	while(p<=m&&q<=r){
+		if(o[p].b>o[q].b) add(o[p].c,1),t[tot++]=o[p++];
+		else o[q].cnt+=sum(n)-sum(o[q].c),t[tot++]=o[q++];
+	}
+	while(p<=m) add(o[p].c,1),t[tot++]=o[p++];
+	while(q<=r) o[q].cnt+=sum(n)-sum(o[q].c),t[tot++]=o[q++];
+	for(int i=l;i<=m;++i) add(o[i].c,-1);
+	for(int i=l;i<=r;++i) o[i]=t[i];
+}
+
+int main()
+{
+	scanf("%d",&n);
+	for(int i=1;i<=n;++i) scanf("%d",&o[i].a);
+	for(int i=1;i<=n;++i) scanf("%d",&o[i].b);
+	for(int i=1;i<=n;++i) scanf("%d",&o[i].c),c[i]=o[i].c;
+	sort(c+1,c+1+n);
+	for(int i=1;i<=n;++i) o[i].c=lower_bound(c+1,c+1+n,o[i].c)-c;
+	sort(o+1,o+1+n,cmp);
+	cdq(1,n);
+	int ans=0;
+	for(int i=1;i<=n;++i) if(o[i].cnt>0) ans++;
+	printf("%d",ans);
+	return 0;
+}
+\end{lstlisting}
