@@ -1,0 +1,100 @@
+\begin{lstlisting}
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+/*
+    cur[] 当前弧优化
+    msmf 最大流时的最小费用
+    s,t 超级源、超级汇
+    多组记得清边和msmf
+    时间复杂度 O(n^2*m)
+*/
+
+const ll inf=0x3f3f3f3f3f3f3f3fll;
+ll msmf,dis[5005];
+int s,t,n,m,cur[5005],vis[5005];
+struct edge
+{
+    int to,rev;
+    ll cap,cost;
+    edge(){}
+    edge(int to,ll cap,ll cost,int rev):to(to),cap(cap),cost(cost),rev(rev){}
+};
+vector<edge> E[5005];
+
+inline void add_edge(int x,int y,ll f,ll c)
+{
+    E[x].emplace_back(y,f,c,E[y].size());
+    E[y].emplace_back(x,0,-c,E[x].size()-1);
+}
+
+int spfa()
+{
+    for(int i=0;i<=n;i++) vis[i]=0,dis[i]=inf; //从编号最小的点到最大的点
+    dis[s]=0;
+    queue<int> q;
+    q.push(s);
+    while(!q.empty())
+    {
+        int p=q.front();q.pop();
+        vis[p]=0;
+        for(auto e:E[p])
+            if(e.cap&&dis[p]+e.cost<dis[e.to])
+            {
+                dis[e.to]=dis[p]+e.cost;
+                if(!vis[e.to])
+                    vis[e.to]=1,q.push(e.to);
+            }
+    }
+    return dis[t]!=inf;
+}
+
+ll dfs(int now,ll flow)
+{
+    if(now==t) return flow;
+    ll rest=flow,k;
+    vis[now]=1;
+    for(int i=cur[now];i<E[now].size();i++)
+    {
+        edge &e=E[now][i];
+        if(e.cap&&dis[now]+e.cost==dis[e.to]&&!vis[e.to])
+        {
+            cur[now]=i;
+            k=dfs(e.to,min(rest,e.cap));
+            e.cap-=k;
+            E[e.to][e.rev].cap+=k;
+            msmf+=k*e.cost;
+            rest-=k;
+        }
+    }
+    vis[now]=0;
+    return flow-rest;
+}
+
+ll dinic()
+{
+    msmf=0;
+    ll ret=0,delta;
+    while(spfa())
+    {
+        for(int i=0;i<=n;i++) cur[i]=vis[i]=0; //从编号最小的点到最大的点
+        while(delta=dfs(s,inf)) ret+=delta;
+    }
+    return ret;
+}
+
+int main()
+{
+    scanf("%d%d%d%d",&n,&m,&s,&t);
+    for(int i=0;i<m;i++)
+    {
+        int x,y;ll a,b;
+        scanf("%d%d%lld%lld",&x,&y,&a,&b);
+        add_edge(x,y,a,b);
+    }
+    ll mxflow=dinic();
+    printf("%lld %lld",mxflow,msmf);
+    return 0;
+}
+\end{lstlisting}
