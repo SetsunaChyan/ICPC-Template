@@ -1,0 +1,32 @@
+//答案都取r 浮点数可以取(l+r)/2
+//浮点数极小值
+while(l+eps<r)
+{
+    double lm=(l+r)/2,rm=(lm+r)/2;
+    if(judge(lm)>judge(rm)) l=lm;
+    else r=rm;
+}
+
+//整数极小值
+while(l+1<r)
+{
+    int lm=(l+r)>>1,rm=(lm+r)>>1;
+    if(judge(lm)>judge(rm)) l=lm;
+    else r=rm;
+}
+
+//浮点数极大值
+while(l+eps<r)
+{
+    double lm=(l+r)/2,rm=(lm+r)/2;
+    if(judge(lm)>judge(rm)) r=rm;
+    else l=lm;
+}
+
+//整数极大值
+while(l+1<r)
+{
+    int lm=(l+r)>>1,rm=(lm+r)>>1;
+    if(judge(lm)>judge(rm)) r=rm;
+    else l=lm;
+}
