@@ -1,0 +1,66 @@
+\begin{lstlisting}
+
+/*
+	bool have(int x) 返回线性基中的数字能否表示数字x
+	void ins(int x) 插入数字x
+	int mn() 返回能表示的最小值
+	int mx() 返回能表示的最大值
+	void bug() 输出p数组
+	int kth(int k) 返回能表示的所有值当中排名第k的
+*/
+
+struct LB{
+	int p[100],N,tmp[100];
+	bool flag;
+	LB(){memset(p,0,sizeof(p));memset(tmp,0,sizeof(tmp));flag=0;N=62;}
+	void ins(int x){
+		for(int i=N;i>=0;--i){
+			if(x&(1LL<<i)){
+				if(!p[i]) {p[i]=x;return;sz++;}
+				else x^=p[i];
+			}
+		}
+		flag=1;
+	}
+	int mx(){
+		int ans=0;
+		for(int i=N;i>=0;--i){
+			if((ans^p[i])>ans) ans^=p[i];
+		}
+		return ans;
+	}
+	int mn(){
+		if(flag) return 0;
+		for(int i=0;i<=N;++i)
+			if(p[i]) return p[i];
+	}
+	bool have(int x){
+		for(int i=N;i>=0;--i){
+			if(x&(1LL<<i)){
+				if(!p[i]) return 0;
+				else x^=p[i];
+			}
+		}
+		return 1;
+	}
+	int kth(int k){
+		int res=0,cnt=0;
+		k-=flag;
+		if(!k) return 0;
+		for(int i=0;i<=N;++i){
+			for(int j=i-1;j>=0;--j){
+				if(p[i]&(1LL<<j)) p[i]^=p[j];
+			}
+			if(p[i]) tmp[cnt++]=p[i];
+		}
+		if(k>=(1LL<<cnt)) return -1;//can't find
+		for(int i=0;i<cnt;++i)
+			if(k&(1LL<<i)) res^=tmp[i];
+		return res;
+	}
+	void bug(){
+		for(int i=0;i<=N;++i) cout<<p[i]<<' ';
+		cout<<endl;
+	}
+}lb;
+\end{lstlisting}
