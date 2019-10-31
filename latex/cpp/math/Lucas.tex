@@ -1,0 +1,62 @@
+C_N^m \equiv C_{N\ mod\ p}^{m\ mod\ p} * C_{N/p}^{m/p}(\ mod\ p)
+
+\tbinom N m \equiv \tbinom{N\mod p}{m\mod p} \cdot \tbinom{N/p}{m/p}(\mod p)
+
+可理解为将N和m表示为p进制数，对每一位的N_i和m_i分别求组合数，再累乘
+
+\begin{lstlisting}
+//洛谷P3807 
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+const int MN = 5e6 + 5;
+
+inline ll qpow(ll a,ll b,int P){	//a^b%P 
+	ll ans=1;
+	for(;b;b>>=1,a=a*a%P)
+		if(b&1) ans=ans*a%P;
+return ans;}
+
+ll fct[MN],fi[MN];	//阶乘及其逆元
+inline void init(int k,int P){	//打表模P的[1,k]阶乘及其逆元
+	fct[0]=1;
+	for(int i=1; i<=k; ++i) fct[i]=fct[i-1]*i%P;
+	if(k<P){
+		fi[k]=qpow(fct[k],P-2,P);
+		for(int i=k; i>=1; --i) fi[i-1]=fi[i]*i%P;
+	}else{	//k阶乘为0，会把所有逆元都变成0，应从P-1开始
+		fi[P-1]=qpow(fct[P-1],P-2,P);
+		for(int i=P-1; i>=1; --i) fi[i-1]=fi[i]*i%P;
+	}
+}
+
+inline int C(int N,int m,int P){	//C_N^m % P
+	if(m>N) return 0;
+	return fct[N]*fi[m]%P*fi[N-m]%P;
+}
+
+//ll lucas(int N,int m,int P){	//递归求C_N^m % P
+//	if(!m) return 1;
+//	return C(N%P,m%P,P)*lucas(N/P,m/P,P)%P;
+//}
+
+int lucas(int N,int m,int P){	//循环求C_N^m % P
+	ll rt=1;
+	while(N&&m)
+		(rt*=C(N%P,m%P,P))%=P,
+		N/=P, m/=P;
+	return rt;
+}
+
+void solve(){
+	int n,m,p; scanf("%d%d%d",&n,&m,&p);
+	init(n+m,p);
+	printf("%lld\n",lucas(n+m,m,p));
+}
+
+int main(int argc, char** argv){ 
+	int _; scanf("%d",&_); while(_--)
+		solve();
+	return 0;
+}
+\end{lstlisting}
