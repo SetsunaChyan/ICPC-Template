@@ -1,0 +1,50 @@
+求解 $x \mod m_i = a_i$ 方程组，其中 $m_i$ 不一定为质数
+和CRT本身没啥关系，是用数学归纳法求解齐次同余方程组的
+\begin{lstlisting}
+//洛谷P4777 
+#include <bits/stdc++.h>
+typedef long long ll;
+const int MN = 3e5 + 5;
+
+ll a[MN],m[MN];
+
+inline ll exgcd(ll a, ll b, ll &x, ll &y){
+	if(!b) return x=1, y=0, a;
+	ll g=exgcd(b, a%b, x, y);
+	ll z=x; x=y; y=z-a/b*y;
+return g;}
+
+ll smul(ll a,ll b,ll p){	//记得传参时先给ab取余一发p
+	ll ans=0;
+	for(;b;b>>=1){
+		if(b&1) ans= (ans+a)%p;
+		a= (a<<1)%p;}
+return ans;}
+
+//ll qmul(ll a,ll b,ll p){	//玄学高精度乘法，备用，可能可以代替上一个
+//	a%=p, b%=p;
+//	ll t=(long double)a*b/p;
+//	ll ans=a*b-t*p;
+//return ans<0? ans+p: ans;}
+
+ll excrt(int n){	//解[0,n)
+	ll X, Y, M=m[0], ans=a[0];
+	for(int i=1; i<n; ++i){
+		ll A=M, B=m[i];
+		ll c=(a[i]-ans%B+B)%B;	//新同余方程的右部
+		ll g=exgcd(A,B,X,Y);
+		if(c%g!=0) return -1;
+		X=smul(X,c/g,B/g);
+		ans+=X*M;
+		M*=B/g;
+		ans=(ans%M+M)%M;}
+return (ans%M+M)%M;}
+
+int main(){
+	int n; scanf("%d",&n);
+	for(int i=0; i<n; ++i) scanf("%lld%lld",m+i,a+i);
+	printf("%lld",excrt(n));
+	return 0;
+}
+
+\end{lstlisting}

@@ -1,0 +1,78 @@
+模数 $P$ 不是质数时不能使用卢卡斯定理计算组合数！
+可对 $P$ 做质因子分解，对各质因子分别求解组合数，得到同余方程组，再用CRT求解。
+具体方法是将 $P$ 分解成 $\Sigma p^k$ 的形式，再计算模 $p^k$ 意义的阶乘。 
+由于 $n \gt p$ 时暴力算 $n! \mod p$ 为0，因此计算阶乘时需先不断递归分块给阶乘除以质因子 $p$，
+算完阶乘后再把除掉的 $p$ 乘回去，才能计算出模 $p^k$ 意义的组合数。 
+*/
+//洛谷P4720
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+inline ll qpow(ll a,ll b,int P){	//a^b%P，此题中b可能爆int
+	ll ans=1;
+	for(;b;b>>=1,a=a*a%P)
+		if(b&1) ans=ans*a%P;
+return ans;}
+
+inline ll exgcd(ll a, ll b, ll &x, ll &y){
+	if(!b) return x=1, y=0, a;
+	ll g=exgcd(b, a%b, x, y);
+	ll z=x; x=y; y=z-a/b*y;
+return g;}
+
+inline ll exinv(int a,int P){	//用exgcd求a模P的逆元 
+	ll x,y;
+	if(exgcd(a,P,x,y)!=1) return -1;
+	else return (x%P+P)%P;
+}
+
+inline int g(ll n,int p){	//n!中质因子p的次数
+	if(n<p) return 0;
+	return n/p+g(n/p,p);
+}
+
+int f(ll n,int p,int pk){	//n!/(p^x) % pk，其中x=g(n,p)
+	if(n==0) return 1;
+	ll s=1, s2=1;	//<=pk的分块乘积，>pk的块外乘积
+	for(ll i=1; i<=pk; ++i)
+		if(i%p) s=s*i%pk;
+	s=qpow(s,n/pk,pk);
+	for(ll i=n/pk*pk; i<=n; ++i)
+		if(i%p) s2=i%pk*s2%pk; 
+	return f(n/p,p,pk)*s%pk*s2%pk;
+}
+
+inline ll c(ll N,ll m,int p,int pk){	//C^m_N % (p^k)
+	ll rt=f(N,p,pk);
+	(rt*=qpow(f(m,p,pk),pk/p*(p-1)-1,pk))%=pk;
+//	(rt*=exinv(f(m,p,pk),pk))%=pk;
+	(rt*=qpow(f(N-m,p,pk),pk/p*(p-1)-1,pk))%=pk;
+//	(rt*=exinv(f(N-m,p,pk),pk))%=pk;
+	(rt*=qpow(p,g(N,p)-g(m,p)-g(N-m,p),pk))%=pk;
+	return rt;
+}
+
+inline ll crt(ll ai,int p,int pk,int P){	//x%(pi^ki)=ai，pk乘积=P
+	return ai*(P/pk)%P*exinv(P/pk,pk)%P;
+//	return ai*(P/pk)%P*qpow(P/pk,pk/p*(p-1)-1,pk)%P;
+}
+
+int exlucas(ll N,ll m,int P){	//C^m_N % P
+	ll rt=0, P2=P;
+	int ed=sqrt(P)+1;
+	for(int p=2; p<=ed; ++p){
+		int pk=1;
+		while(P2%p==0) pk*=p, P2/=p;
+		if(pk>1) (rt+=crt(c(N,m,p,pk),p,pk,P))%=P;
+	}
+	if(P2>1) (rt+=crt(c(N,m,P2,P2),P2,P2,P))%=P;
+	return rt;
+}
+
+int main(int argc, char** argv){
+	ios::sync_with_stdio(0);
+	ll N,m,P; cin>>N>>m>>P;
+	cout<<exlucas(N,m,P);
+	return 0;
+}
