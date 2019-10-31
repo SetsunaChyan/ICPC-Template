@@ -1,8 +1,9 @@
-C_N^m \equiv C_{N\ mod\ p}^{m\ mod\ p} * C_{N/p}^{m/p}(\ mod\ p)
 
-\tbinom N m \equiv \tbinom{N\mod p}{m\mod p} \cdot \tbinom{N/p}{m/p}(\mod p)
+$$C_N^m \equiv C_{N\ mod\ p}^{m\ mod\ p} * C_{N/p}^{m/p}(\ mod\ p)$$
 
-可理解为将N和m表示为p进制数，对每一位的N_i和m_i分别求组合数，再累乘
+$$\tbinom N m \equiv \tbinom{N\mod p}{m\mod p} \cdot \tbinom{N/p}{m/p}(\mod p)$$
+
+可理解为将 $N$ 和 $m$ 表示为 $p$ 进制数，对每一位的 $N_i$ 和 $m_i$ 分别求组合数，再累乘
 
 \begin{lstlisting}
 //洛谷P3807 
