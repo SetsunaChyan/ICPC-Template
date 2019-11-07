@@ -1,0 +1,64 @@
+\begin{lstlisting}
+/*
+求解x^2 % P = n，当P为奇质数时，可用类似虚数平方的方法求解，
+类似实数域一元二次方程，答案可能为两不同解，两相同解或无实数解，详见solve()
+*/
+//洛谷P5491求二次剩余
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+int P;	//模数，为了避免传参而放在全局变量
+
+inline ll qpow(ll a,int b){	//a^b%P
+	ll ans=1;
+	for(; b; b>>=1,a=a*a%P)
+		if(b&1) ans=ans*a%P;
+return ans;}
+
+ll t,tt;	//tt为t的平方。注意！！！复数类中每次乘法都要用到tt！！！
+struct CP{	//求解二次剩余专用的魔改复数类 
+	ll x,y;
+	CP(ll x=0,ll y=0):x(x),y(y){}
+	CP operator*=(const CP&r){	//乘以r，模数P为全局变量
+		return *this = CP((x*r.x%P+y*r.y%P*tt%P)%P,(y*r.x%P+x*r.y%P)%P);
+	}
+	CP qpow(int n){	//n次幂，模数P为全局变量
+		CP rt = CP(1,0);
+		for(; n; n>>=1){
+			if(n&1) rt *= *this;
+			*this *= *this;
+		}
+		return *this = rt;
+	}
+};
+
+int cipolla(int n){	//求x*x%P=n的一个解，P是奇质数，无解时return-1
+	if(n==0) return 0; 
+	if(qpow(n,(P-1)>>1)==P-1) return -1;	//无解
+	srand(time(0));	//初始化随机数种子
+	for(;;){	//随机找到一个满足break条件的t即可 
+		t=rand()%P;
+		tt=(t*t%P-n+P)%P;
+		if(qpow(tt,(P-1)>>1)==P-1) break;
+	}
+	CP rt=CP(t,1).qpow((P+1)>>1);
+	return rt.x;
+}
+
+inline void solve(){
+	int n; scanf("%d%d",&n,&P);	//注意P是全局变量，之后就不传参了 
+	int ans=cipolla(n);
+	int ans2=(P-ans)%P;	//此处取模纯粹是为了避免ans为0时ans2为P
+	if(ans==-1) return puts("Hola!"), void(); 
+	if(ans2<ans) swap(ans,ans2);
+	if(ans!=ans2) printf("%d %d\n",ans,ans2);
+	else printf("%d\n",ans);
+}
+
+int main(int argc, char** argv){
+	int _; scanf("%d",&_); while(_--)
+		solve();
+	return 0;
+}
+\end{lstlisting}
