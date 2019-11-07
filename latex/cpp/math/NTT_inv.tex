@@ -1,0 +1,93 @@
+\begin{lstlisting}
+//洛谷P4238倍增求模x^n的多项式，即相乘后忽略n次及更高次只剩1
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+const int P = 998244353;
+const int G = 3;
+const int MN = 4e5 + 5;
+
+inline int read(){
+	int k=0, f=1;
+	char c=getchar();
+	while(!isdigit(c)){ if(c=='-') f=-1; c=getchar(); }
+	while(isdigit(c)) k=k*10+c-48, c=getchar();
+	return k*f;}
+
+int qpow(ll a, int b){
+	ll ans=1ll;
+	for(;b;b>>=1){
+		if(b&1)
+			ans=ans*a%P;
+		a=a*a%P;}
+	return ans;}
+
+inline int inv(ll value){ return qpow(value, P-2); }
+
+//namespace NTT{
+	int R[MN];	//01串逆转后对应的下标
+	void calcR(int len){	//计算len次多项式的R数组 
+		int loglen = R[0] = 0;
+		while(1<<loglen < len) ++loglen;
+		for(int i=1; i<len; ++i) R[i] = (R[i>>1] >>1) | ((i&1)<< loglen-1);
+	}
+	void ntt(int *a, int n, int f=1){	//f取-1时是逆变换
+		for(int i=0; i<n; ++i) if(R[i] < i) swap(a[i],a[R[i]]);
+		int baseW = qpow(G, (P-1) / n);
+		for(int len = 2; len <= n; len <<= 1){
+			int mid = len >>1;
+			int wn = qpow(baseW, n / len);
+			for(int *pos = a; pos != a+n; pos += len){
+				int w = 1;
+				for(int i=0; i<mid; ++i){
+					int x = pos[i], y = (ll)pos[mid + i] * w % P;
+					pos[i] = ((ll)x + y) % P;
+					pos[mid + i] = ((ll)x - y + P) % P;
+					w = (ll)w * wn % P;
+				}
+			}
+		}
+		if(f==-1){
+			int miv = inv( ll(n) );
+			reverse(a+1,a+n);
+			for(int i=0; i<n; ++i) a[i] = ll(a[i]) * miv % P;
+		}
+	}
+	void mult(int *a, int *b, int len){	//len次多项式乘法，答案存进a
+		calcR(len);
+		ntt(a,len);
+		ntt(b,len);
+		for(int i=0; i<len; ++i) a[i] = (ll)a[i] * b[i] % P;
+		ntt(a,len,-1);
+		int x = inv(len);
+		for(int i=0; i<len; ++i) a[i] = (ll)a[i] * x % P;
+	}
+//}
+//using namespace NTT;
+
+int f[MN],g[MN],A[MN],B[MN];	//输出输入及其副本
+int n;	//多项式长度
+
+void inv(int *a, int *b, int len){	//封装好的len次多项式求逆，答案存进b
+	if(len==1) return b[0] = inv(ll(a[0])), void();
+	inv(a, b, len+1 >>1);
+	int LEN = 1;	//扩展到2的整数次幂的len
+	while(LEN < (len<<1)) LEN <<= 1;
+	calcR(LEN);
+	for(int i=0; i<len; ++i) A[i] = a[i];
+	for(int i=len; i<LEN; ++i) A[i] = 0;
+	ntt(A,LEN), ntt(b,LEN);
+	for(int i=0; i<LEN; ++i) b[i] = ll(2 - ll(A[i]) * b[i] % P + P) % P * b[i] % P;
+	ntt(b,LEN,-1);
+	for(int i=len; i<LEN; ++i) b[i] = 0;
+}
+
+int main(){
+	n = read();
+	for(int i=0; i<n; ++i) g[i] = read();
+	inv(g,f,n);
+	for(int i=0; i<n; ++i) printf("%d ",f[i]);
+	return 0;
+}
+\end{lstlisting}

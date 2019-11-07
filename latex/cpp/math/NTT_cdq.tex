@@ -1,0 +1,90 @@
+\begin{lstlisting}
+//大致原理是cdq分治套NTT求f_i = f和g的前i项卷积
+//洛谷P4721求f_i = \sigma_{j=1]^i f_{i-j} * g_j 
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+const int P = 998244353;
+const int G = 3;
+const int MN = 2e5 + 5;
+
+inline int read(){
+	int k=0, f=1;
+	char c=getchar();
+	while(!isdigit(c)){ if(c=='-') f=-1; c=getchar(); }
+	while(isdigit(c)) k=k*10+c-48, c=getchar();
+	return k*f;}
+
+int qpow(ll a, int b){
+	ll ans=1ll;
+	for(;b;b>>=1){
+		if(b&1)
+			ans=ans*a%P;
+		a=a*a%P;}
+	return ans;}
+
+inline int inv(ll value){ return qpow(value, P-2); }
+
+namespace NTT{
+	int R[MN];	//01串逆转后对应的下标
+	void calcR(int len){	//计算len次多项式的R数组
+		int loglen = R[0] = 0;
+		while(1<<loglen < len) ++loglen;
+		for(int i=1; i<len; ++i) R[i] = (R[i>>1] >>1) | ((i&1)<< loglen-1);
+	}
+	void ntt(int *a, int n, int f=1){	//f取-1时是逆变换
+		for(int i=0; i<n; ++i) if(R[i] < i) swap(a[i],a[R[i]]);
+		int baseW = qpow(G, (P-1) / n);
+		if(f==-1) baseW = inv(baseW);
+		for(int len = 2; len <= n; len <<= 1){
+			int mid = len >>1;
+			int wn = qpow(baseW, n / len);
+			for(int *pos = a; pos != a+n; pos += len){
+				int w = 1;
+				for(int i=0; i<mid; ++i) {
+					int x = pos[i], y = (ll)pos[mid + i] * w % P;
+					pos[i] = ((ll)x + y) % P;
+					pos[mid + i] = ((ll)x - y + P) % P;
+					w = (ll)w * wn % P;
+				}
+			}
+		}
+	}
+	void mult(int *a, int *b, int len){	//封装好的len次多项式乘法，答案存进a
+		calcR(len);
+		ntt(a,len);
+		ntt(b,len);
+		for(int i=0; i<len; ++i)  a[i] = (ll)a[i] * b[i] % P;
+		ntt(a,len,-1);
+		int x = inv(len);
+		for(int i=0; i<len; ++i)  a[i] = (ll)a[i] * x % P;
+	}
+}
+using namespace NTT;
+
+int f[MN],g[MN],A[MN],B[MN];	//输出输入及其副本
+int n;	//多项式长度
+
+void cdq(int l, int r){	//分治[l,r]
+	if(l==r) return;
+	int mid = l+r >> 1, len = 1;
+	while(len < r-l) len <<= 1;
+	cdq(l,mid);
+	for(int i=0; i<len; ++i) A[i] = 0, B[i] = 0;
+	for(int i=0; i<=mid-l; ++i) A[i] = f[l+i];	//l开始的当前区间的左半f
+	for(int i=0; i<r-l; ++i)  B[i] = g[i+1];	//1开始的当前区间长度的g
+	mult(A,B,len);	//卷积求出左半端的贡献
+	for(int i=mid+1; i<=r; ++i) f[i] = (f[i] + A[i-l-1]) % P;
+	cdq(mid+1,r);
+}
+
+int main(){
+	n = read();
+	for(int i=1; i<n; ++i) g[i] = read();
+	f[0] = 1;	//题目给的初值
+	cdq(0,n-1);
+	for(int i=0; i<n; ++i) printf("%d ",f[i]);
+	return 0;
+}
+\end{lstlisting}

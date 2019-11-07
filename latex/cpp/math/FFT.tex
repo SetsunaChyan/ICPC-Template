@@ -1,0 +1,78 @@
+\begin{lstlisting}
+/* 
+大致原理：O(NlogN)地将一个N次多项式系数表达式转化成关于(1的N次复数根)的N个点值
+对两个多项式的点值做乘法，得到新的点值表达式，再O(NlogN)地转回系数表达式
+利用R数组和“蝴蝶定理”可以将递归FFT过程转为循环过程，优化复杂度的常数
+写得很乱，欢迎有空的同学来更新个好看点的
+*/
+//洛谷P3803裸的多项式乘积
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+typedef double db;
+ 
+const int MN = 3e6 + 5;
+const db pi = acos(-1);
+
+struct CP{
+	db x,y;	//实部，虚部
+	CP (db x=0, db y=0): x(x), y(y) {}
+	CP operator+(CP &t){ return CP(x+t.x, y+t.y); }
+	CP operator-(CP &t){ return CP(x-t.x, y-t.y); }
+	CP operator*(CP &t){ return CP(x*t.x - y*t.y, x*t.y + y*t.x); }
+}a[MN],b[MN];
+
+int read(){
+	int k=0, f=1;
+	char c=getchar();
+	while(!isdigit(c)){ if(c=='-') f=-1; c=getchar(); }
+	while(isdigit(c)) k= k*10 + c-48 , c=getchar();
+	return k*f;
+}
+void write(int x){
+	if(x<0){ putchar('-'); x=~(x-1); }
+	int s[20],top=0;
+	while(x){ s[++top]=x%10; x/=10; }
+	if(!top) s[++top]=0;
+	while(top) putchar(s[top--]+'0');
+}
+
+int N,M,n,ln;	//左多项式次数，右多项式次数，fft次数及其位数
+int R[MN];	//01串逆转后对应的下标
+inline void calR(){	//通过NM初始化以上数据
+	n=1;
+	while(n<=N+M) n<<=1, ++ln;
+	for(int i=1; i<n; ++i) R[i] = (R[i>>1] >>1) | ((i&1)<< ln-1);
+}
+inline void init(){
+	N=read(); M=read();
+	for(int i=0; i<=N; ++i) a[i].x=read();
+	for(int i=0; i<=M; ++i) b[i].x=read();
+	calR();
+}
+void fft(CP c[], int f=1){	//f取-1时是逆变换
+	for(int i=0; i<n; ++i) if(i<R[i]) swap(c[i], c[R[i]]);
+	for(int j=1; j<n; j<<=1){
+		CP wn(cos(pi/j), f*sin(pi/j));
+		for(int k=0; k<n; k+=(j<<1)){
+			CP t(1, 0);
+			for(int l=0; l<j; ++l){
+				CP cl=c[k+l], cr=t*c[j+k+l];
+				c[k+l]=cl+cr;
+				c[j+k+l]=cl-cr;
+				t=t*wn;
+			}
+		}
+	}
+}
+
+int main(int argc, char** argv) {
+//	ios::sync_with_stdio(0);
+	init();
+	fft(a), fft(b);
+	for(int i=0; i<=n; ++i) a[i]=a[i]*b[i];
+	fft(a,-1);
+	for(int i=0; i<=N+M; ++i) write(int(a[i].x/n + 0.5)), putchar(' ');
+	return 0;
+}
+\end{lstlisting}

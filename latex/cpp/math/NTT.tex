@@ -1,0 +1,83 @@
+\begin{lstlisting}
+/* 
+大致原理：令P=998244353，g=3，g的n次幂模P可得到P种值，称g为模P的原根
+O(NlogN)地将一个N次多项式系数表达式转化成关于模P的原根的g的次幂的N个点值 
+对两个多项式的点值做乘法，得到新的点值表达式，再O(NlogN)地转回系数表达式
+利用R数组和“蝴蝶定理”可以将递归NTT过程转为循环过程，优化复杂度的常数
+写得很乱，欢迎有空的同学来更新个好看点的
+顺带一提求逆和分治里用的是细节不同的另外两种实现的NTT，不过也都很乱
+*/
+//洛谷P3803裸的多项式乘积，在大数据下的表现可能反而不如FFT
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+ 
+const int MN = 3e6 + 5;
+const int P = 998244353;
+
+int qpow(ll a,int b){
+	ll ans=1;
+	for(;b;b>>=1){
+		if(b&1)
+			ans=ans*a%P;
+		a=a*a%P;}
+return ans;}
+
+int read(){
+	int k=0, f=1;
+	char c=getchar();
+	while(!isdigit(c)){ if(c=='-') f=-1; c=getchar(); }
+	while(isdigit(c)) k= k*10 + c-48 , c=getchar();
+	return k*f;
+}
+void write(int x){
+	if(x<0){ putchar('-'); x=~(x-1); }
+	int s[20],top=0;
+	while(x){ s[++top]=x%10; x/=10; }
+	if(!top) s[++top]=0;
+	while(top) putchar(s[top--]+'0');
+}
+
+int a[MN],b[MN],c[MN];
+int N,M,n,ln;	//左多项式次数，右多项式次数，fft次数及其位数
+int R[MN];	//01串逆转后对应的下标
+inline void calR(){	//通过NM初始化以上数据
+	n=1;
+	while(n<=N+M) n<<=1, ++ln;
+	for(int i=1; i<n; ++i) R[i] = (R[i>>1] >>1) | ((i&1)<< ln-1);
+}
+inline void init(){
+	N=read(); M=read();
+	for(int i=0; i<=N; ++i) a[i]=read();
+	for(int i=0; i<=M; ++i) b[i]=read();
+	calR();
+}
+void ntt(int c[], int f=1){	//f取-1时是逆变换
+	for(int i=0; i<n; ++i) if(i<R[i]) swap(c[i], c[R[i]]);
+	for(int j=1; j<n; j<<=1){
+		int j2=j<<1;
+		int rt=qpow(3,(P-1)/j2);
+		if(f==-1) rt=qpow(rt, P-2);	//逆变换时除以rt，即乘以rt逆元
+		for(int k=0; k<n; k+=j2){
+			int t=1;
+			for(int l=0; l<j; ++l){
+				int tl=c[k+l], tr=ll(t)*c[j+k+l]%P;
+				c[k+l]=(tl+tr)%P;
+				c[j+k+l]=((tl-tr)%P+P)%P;
+				t=ll(t)*rt%P;
+			}
+		}
+	}
+}
+
+int main(int argc, char** argv) {
+//	ios::sync_with_stdio(0);
+	init();
+	ntt(a), ntt(b);
+	for(int i=0; i<=n; ++i) c[i]=ll(a[i])*b[i]%P;
+	ntt(c,-1);
+	ll mi=qpow(n,P-2);
+	for(int i=0; i<=N+M; ++i) write((c[i]*mi)%P), putchar(' ');
+	return 0;
+}
+\end{lstlisting}
