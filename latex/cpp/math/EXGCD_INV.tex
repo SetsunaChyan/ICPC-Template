@@ -1,0 +1,30 @@
+$a$ $P$ 互质是 $a$ 在模 $P$ 时有乘法逆元的充要条件
+用扩展欧几里得算法解出的 $ax+by=1$ 的解 $x$ 即为 $a$ 在模 $P$ 时的乘法逆元
+顺带一提，有乘法逆元时，根据欧拉定理，逆元一定为 $a^{\phi(P)-1} \mod P$
+
+\begin{lstlisting}
+
+//洛谷P1082
+#include <bits/stdc++.h>
+typedef long long ll;
+
+ll a,P,x,y;
+inline ll exgcd(ll a, ll b, ll &x, ll &y){
+	if(!b) return x=1, y=0, a;
+	ll g=exgcd(b, a%b, x, y);
+	ll z=x; x=y; y=z-a/b*y;
+	return g;
+}
+inline ll exinv(int a,int P){	//用exgcd求a模P的逆元，无解时返回-1
+	ll x,y;
+	if(exgcd(a,P,x,y)!=1) return -1;
+	else return (x%P+P)%P;
+}
+
+int main(){
+	scanf("%lld%lld",&a,&P);
+	printf("%lld",exinv(a,P));
+	return 0;
+}
+
+\end{lstlisting}
