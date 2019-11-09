@@ -1,0 +1,27 @@
+\begin{lstlisting}
+#include <bits/stdc++.h>
+using namespace std;
+#include <ext/pb_ds/tree_policy.hpp>
+#include <ext/pb_ds/assoc_container.hpp>
+using namespace __gnu_pbds;
+
+tree<pii,null_type,less<pii>,rb_tree_tag,tree_order_statistics_node_update> t;//红黑树
+
+int main()
+{
+	ios_base::sync_with_stdio(0),cin.tie(0),cout.tie(0);
+	int n,op,x;
+	cin>>n;
+	for(int i=0;i<n;i++)
+	{
+		cin>>op>>x;
+		if(op==1)t.insert({x,i+1});//插入x，用独特的正整数i+1标注（因为erase太辣鸡）
+		if(op==2)t.erase(t.lower_bound({x,0}));//删除x（删除单个元素）
+		if(op==3)cout<<t.order_of_key({x,0})+1<<endl;//x的排名（小于x的元素个数+1）
+		if(op==4)cout<<t.find_by_order(x-1)->first<<endl;//排名为x的元素（第x小）
+		if(op==5)cout<<prev(t.lower_bound({x,0}))->first<<endl;//x的前驱（小于x且最大）
+		if(op==6)cout<<t.lower_bound({x+1,0})->first<<endl;//x的后继（大于x且最小）
+	}
+	return 0;
+}
+\end{lstlisting}
