@@ -1,12 +1,9 @@
-Çó½â $a^x \mod p = b$ £º
-µ±**Ä£Êı $p$ ÊÇÖÊÊı**Ê±¿ÉÖ±½ÓÊ¹ÓÃ $baby_step_giant_step$ £¬ 
-Éè $p$ µÄÕıÆ½·½¸ùÎª $s$ £¬BSGSµÄÔ­ÀíÊÇ½« $a$ µÄ $p$ ´ÎÃİ·Ö¿é³É $s$¸ö£¬
+æ±‚è§£ $a^x \mod p = b$;\\
+å½“\textbf{æ¨¡æ•° $p$ æ˜¯è´¨æ•°}æ—¶å¯ç›´æ¥ä½¿ç”¨ $baby\_step\_giant\_step$ ,è®¾ $p$ çš„æ­£å¹³æ–¹æ ¹ä¸º $s$ ,BSGSçš„åŸç†æ˜¯å°† $a$ çš„ $p$ æ¬¡å¹‚åˆ†å—æˆ $s$ä¸ª,é¢„å¤„ç†å¥½å¤§çº¦ $s+1$ ä¸ª $b*a^i(i\in[0,s])$ ,å†ç”¨éå†å„åˆ†å—,æŸ¥æ‰¾æ˜¯å¦å­˜åœ¨ $a^{s*i}$ ç­‰äºé¢„å¤„ç†çš„ $b*a^i$ ;\\
+å½“\textbf{æ¨¡æ•° $p$ ä¸æ˜¯è´¨æ•°}æ—¶,åœ¨EXBSGSå…ˆçº¦åˆ† $b,p$ åˆ° $a,p$ äº’è´¨,å†è°ƒç”¨BSGS.
 
-Ô¤´¦ÀíºÃ´óÔ¼ $s+1$ ¸ö $b*a^i(i\in[0,s])$ £¬ 
-ÔÙÓÃ±éÀú¸÷·Ö¿é£¬²éÕÒÊÇ·ñ´æÔÚ $a^{s*i}$ µÈÓÚÔ¤´¦ÀíµÄ $b*a^i$ £» 
-µ±**Ä£Êı $p$ ²»ÊÇÖÊÊı**Ê±£¬ÔÚEXBSGSÏÈÔ¼·Ö $b,p$ µ½ $a,p$ »¥ÖÊ£¬ÔÙµ÷ÓÃBSGS¡£
 \begin{lstlisting}
-//Âå¹ÈP4195 
+//æ´›è°·P4195 
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
@@ -15,9 +12,10 @@ inline ll exgcd(ll a, ll b, ll &x, ll &y){
 	if(!b) return x=1, y=0, a;
 	ll g=exgcd(b, a%b, x, y);
 	ll z=x; x=y; y=z-a/b*y;
-return g;}
+	return g;
+}
 
-inline ll exinv(int a,int P){	//ÓÃexgcdÇóaÄ£PµÄÄæÔª£¬ÎŞ½âÊ±·µ»Ø-1
+inline ll exinv(int a,int P){	//ç”¨exgcdæ±‚aæ¨¡Pçš„é€†å…ƒ,æ— è§£æ—¶è¿”å›-1
 	ll x,y;
 	if(exgcd(a,P,x,y)!=1) return -1;
 	else return (x%P+P)%P;
@@ -27,9 +25,10 @@ inline ll qpow(ll a,int b,int P){	//a^b%P
 	ll ans=1;
 	for(;b;b>>=1,a=a*a%P)
 		if(b&1) ans=ans*a%P;
-return ans;}
+	return ans;
+}
 
-int bsgs(int a, int b, int p){	//a^x=b%pµÄ×îĞ¡·Ç¸ºx£¬ÎŞ½âÊ±·µ»Ø-1
+int bsgs(int a, int b, int p){	//a^x=b%pçš„æœ€å°éè´Ÿx,æ— è§£æ—¶è¿”å›-1
 	unordered_map<int,int>hsh;
 	a%=p, b%=p;
 	int s=sqrt(p)+1, bai=b;
@@ -45,7 +44,7 @@ int bsgs(int a, int b, int p){	//a^x=b%pµÄ×îĞ¡·Ç¸ºx£¬ÎŞ½âÊ±·µ»Ø-1
 	return -1;
 }
 
-int exbsgs(int a, int b, int p){	//a^x=b%pµÄ×îĞ¡·Ç¸ºx£¬ÎŞ½âÊ±·µ»Ø-1
+int exbsgs(int a, int b, int p){	//a^x=b%pçš„æœ€å°éè´Ÿx,æ— è§£æ—¶è¿”å›-1
 	a%=p, b%=p;
 	if(b==1) return 0;
 	int k=1, cnt=0, d;
@@ -59,7 +58,7 @@ int exbsgs(int a, int b, int p){	//a^x=b%pµÄ×îĞ¡·Ç¸ºx£¬ÎŞ½âÊ±·µ»Ø-1
 	return ans;
 }
 
-inline int solve(){	//Ä£°åÌâÖĞÒÔÈ«0ÎªÊäÈë½áÎ²
+inline int solve(){	//æ¨¡æ¿é¢˜ä¸­ä»¥å…¨0ä¸ºè¾“å…¥ç»“å°¾
 	int a,b,p;
 	cin>>a>>p>>b;
 	if(!a && !b && !p) return 0;
@@ -69,7 +68,7 @@ inline int solve(){	//Ä£°åÌâÖĞÒÔÈ«0ÎªÊäÈë½áÎ²
 	return 1;
 }
 
-int main(int argc, char** argv){
+int main(){
 	ios::sync_with_stdio(0);
 	while(solve()) ;
 	return 0;
