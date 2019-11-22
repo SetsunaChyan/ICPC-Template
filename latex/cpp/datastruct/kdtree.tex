@@ -1,0 +1,94 @@
+﻿\begin{lstlisting}
+#include<bits/stdc++.h>
+#define fi first
+#define se second
+using namespace std;
+//HDOJ 4347
+
+/*
+	给出 n 个 K 维的点，又给出 t 个查询， 每个查询也给出一个 K 维的点，要求查询 n 个点中距离这个点最近的 M 个点。
+*/
+
+const int maxn=5e4+10;
+const int maxk=5;
+int k,idx;
+struct Point
+{
+    int x[maxk];
+    bool operator<(const Point &o)const
+    {
+        return x[idx]<o.x[idx];
+    }
+    void print()
+    {
+        for(int i=0;i<k;i++) printf("%d%c",x[i],(i==k-1)?'\n':' ');
+    }
+}poi[maxn];
+typedef pair<double,Point> P;
+priority_queue<P> Q;
+void clear(priority_queue<P> &Q)
+{
+    if(Q.empty()) return;
+    priority_queue<P> tp;
+    swap(Q,tp);
+}
+struct kdTree
+{
+    #define sqr(x) ((x)*(x))
+    #define ls (rt<<1)
+    #define rs (rt<<1|1)
+    Point o[maxn<<2];
+    int son[maxn<<2];
+
+    void build(int rt,int l,int r,int dep)
+    {
+        if(l>r) return;
+        son[rt]=r-l, son[ls]=son[rs]=-1;
+        idx=dep%k;
+        int mid=(l+r)>>1;
+        nth_element(poi+l,poi+mid,poi+r+1);
+        o[rt]=poi[mid];
+        build(ls,l,mid-1,dep+1);
+        build(rs,mid+1,r,dep+1);
+    }
+    void query(int rt,Point p,int m,int dep)
+    {
+        if(son[rt]==-1) return;
+        P nd(0,o[rt]);
+        for(int i=0;i<k;i++) nd.fi+=sqr(nd.se.x[i]-p.x[i]);
+        int dim=dep%k, x=ls, y=rs; bool fg=0;
+        if(p.x[dim]>=o[rt].x[dim]) swap(x,y);
+        if(~son[x]) query(x,p,m,dep+1);
+        if(Q.size()<m) Q.push(nd), fg=1;
+        else
+        {
+            if(nd.fi<Q.top().fi) Q.pop(), Q.push(nd);
+            if(sqr(p.x[dim]-o[rt].x[dim])<Q.top().fi) fg=1;
+        }
+        if(~son[y] && fg) query(y,p,m,dep+1);
+    }
+}kdt;
+
+int n;
+int main()
+{
+    while(scanf("%d%d",&n,&k)!=EOF)
+    {
+        for(int i=0;i<n;i++) for(int j=0;j<k;j++) scanf("%d",&(poi[i].x[j]));
+        kdt.build(1,0,n-1,0);
+        int t; scanf("%d",&t);
+        stack<Point> ans;
+        while(t--)
+        {
+            Point qry;
+            for(int i=0;i<k;i++) scanf("%d",&qry.x[i]);
+            int m; scanf("%d",&m);
+            clear(Q);
+            kdt.query(1,qry,m,0);
+            printf("the closest %d points are:\n",m);
+            while(Q.size()) ans.push(Q.top().se), Q.pop();
+            while(ans.size()) ans.top().print(), ans.pop();
+        }
+    }
+}
+\end{lstlisting}
