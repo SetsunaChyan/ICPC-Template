@@ -1,0 +1,86 @@
+﻿\begin{lstlisting}
+#include <bits/stdc++.h>
+using namespace std;
+//luogu P4782
+
+/*
+	2-SAT用于求解有n个布尔变量x1-xn和m个需要满足的条件
+	每个条件形式为xi=0(1)||xj=0(1)，是否有可行解
+	注意要开两倍空间建反向边
+	2−SAT输出方案的方法为：先把缩点之后的新图进行拓扑排序，然后判断每个点i，如果i所在强连通分量的拓扑序在i'所在的强连通分量的拓扑序之后，那么第i场游戏使用该地图适合的第一种赛车，否则使用第二种赛车。
+	但是由于Tarjan求强连通分量就是按拓扑排序的逆序给出的，所以直接使用强连通分量编号判断即可。
+	即如果bel[]为每个点的所在强连通分量编号，那么判断为：如果bel[i]<bel[i']，那么使用该地图适合的第一种赛车，否则使用第二种赛车。
+*/
+
+const int N=2e6+5;
+
+int n,m,a,va,b,vb;
+int dfn[N],low[N],timer=0;
+stack<int> s;
+bool vis[N];
+vector<int> e[N];
+int co[N],color=0;
+
+void add(int x,int y)
+{
+	e[x].push_back(y);
+}
+
+void tarjan(int u)
+{
+	dfn[u]=low[u]=++timer;
+	s.push(u);
+	vis[u]=1;
+	for(auto v:e[u])
+	{
+		if(!dfn[v])
+			tarjan(v),
+			low[u]=min(low[u],low[v]);
+		else if(vis[v])
+			low[u]=min(low[u],dfn[v]);
+	}
+	if(low[u]==dfn[u])
+	{
+		int v;
+		color++;
+		do
+		{
+			v=s.top();
+			s.pop();
+			vis[v]=0;
+			co[v]=color;
+		}
+		while(u!=v);
+	}
+}
+
+bool solve()
+{
+	for(int i=1;i<=2*n;++i)
+		if(!dfn[i]) tarjan(i);
+	for(int i=1;i<=n;++i)
+		if(co[i]==co[i+n])
+			return 0;
+	return 1;
+}
+
+int main()
+{
+	scanf("%d%d",&n,&m);
+	for(int i=1;i<=m;++i)
+	{
+		scanf("%d%d%d%d",&a,&va,&b,&vb);
+		int nota=va^1,notb=vb^1;
+		add(a+nota*n,b+vb*n);//not a and b
+		add(b+notb*n,a+va*n);//not b and a
+	}
+	if(solve())
+	{
+		puts("POSSIBLE");
+		for(int i=1;i<=n;++i)
+			printf("%d ",co[i]>co[i+n]);
+	}
+	else puts("IMPOSSIBLE");
+	return 0;
+}
+\end{lstlisting}
