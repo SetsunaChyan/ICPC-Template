@@ -1,0 +1,98 @@
+﻿\begin{lstlisting}
+#include <bits/stdc++.h>
+#define x1 xa
+#define x2 xb
+#define y1 ya
+#define y1 yb
+using namespace std;
+typedef long long ll;
+const int N=500005;
+
+//luogu P5490
+
+/*
+上面的define是为了防止某些时候的CE
+时刻记得节点[3,3]表示的是3号Y坐标与4号Y坐标构成的线段长度
+*/
+
+int n;
+ll x1,y1,x2,y2;
+vector<ll> Y;
+
+struct line
+{
+	ll x,y1,y2;
+	int mark;
+};
+vector<line> v;
+bool cmp(line a,line b){return a.x<b.x;}
+
+struct seg
+{
+	int l,r,cov;
+	ll len;
+}tr[N<<2];
+
+void build(int p,int l,int r)
+{
+	tr[p].l=l,tr[p].r=r;
+	tr[p].len=tr[p].cov=0;
+	if(l==r) return;
+	int m=l+r>>1;
+	build(p<<1,l,m);
+	build(p<<1|1,m+1,r);
+}
+
+void up(int p)
+{
+	int l=tr[p].l,r=tr[p].r;
+	if(tr[p].cov>0)
+		tr[p].len=Y[r]-Y[l-1];//
+	else
+		tr[p].len=tr[p<<1].len+tr[p<<1|1].len;
+}
+
+void modi(int L,int R,int V,int p=1)
+{
+	int l=tr[p].l,r=tr[p].r;
+	if(L<=l&&r<=R)
+	{
+		tr[p].cov+=V;
+		up(p);
+		return;
+	}
+	int m=l+r>>1;
+	if(L<=m) modi(L,R,V,p<<1);
+	if(R>m) modi(L,R,V,p<<1|1);
+	up(p);
+}
+
+int main()
+{
+	scanf("%d",&n);
+	for(int i=1;i<=n;++i)
+	{
+		scanf("%lld%lld%lld%lld",&x1,&y1,&x2,&y2);
+		Y.push_back(y1);
+		Y.push_back(y2);
+		v.push_back((line){x1,y1,y2,1});
+		v.push_back((line){x2,y1,y2,-1});
+	}
+	sort(v.begin(),v.end(),cmp);
+	sort(Y.begin(),Y.end());
+	for(auto &i:v)
+	{
+		i.y1=lower_bound(Y.begin(),Y.end(),i.y1)-Y.begin()+1;
+		i.y2=lower_bound(Y.begin(),Y.end(),i.y2)-Y.begin()+1;
+	}
+	build(1,1,Y.size());
+	ll ans=0;
+	for(int i=0;i<=v.size()-2;++i)
+	{
+		modi(v[i].y1,v[i].y2-1,v[i].mark);//
+		ans+=tr[1].len*(v[i+1].x-v[i].x);
+	}
+	printf("%lld",ans);
+	return 0;
+}
+\end{lstlisting}
