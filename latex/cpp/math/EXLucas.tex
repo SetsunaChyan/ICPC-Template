@@ -3,7 +3,7 @@
 具体方法是将 $P$ 分解成 $\Sigma p^k$ 的形式，再计算模 $p^k$ 意义的阶乘。 
 由于 $n \gt p$ 时暴力算 $n! \mod p$ 为0，因此计算阶乘时需先不断递归分块给阶乘除以质因子 $p$，
 算完阶乘后再把除掉的 $p$ 乘回去，才能计算出模 $p^k$ 意义的组合数。 
-*/
+\begin{lstlisting}
 //洛谷P4720
 #include <bits/stdc++.h>
 using namespace std;
@@ -76,3 +76,5 @@ int main(int argc, char** argv){
 	cout<<exlucas(N,m,P);
 	return 0;
 }
+
+\end{lstlisting}
