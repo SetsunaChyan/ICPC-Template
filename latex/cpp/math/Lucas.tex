@@ -1,9 +1,8 @@
-
 $$C_N^m \equiv C_{N\ mod\ p}^{m\ mod\ p} * C_{N/p}^{m/p}(\ mod\ p)$$
 
 $$\tbinom N m \equiv \tbinom{N\mod p}{m\mod p} \cdot \tbinom{N/p}{m/p}(\mod p)$$
 
-可理解为将 $N$ 和 $m$ 表示为 $p$ 进制数（形如 $\Sigma N_ip^i$ ），对每一位的 $N_i$ 和 $m_i$ 分别求组合数，再累乘，注意此处的**$p$ 必须为质数**
+可理解为将 $N$ 和 $m$ 表示为 $p$ 进制数（形如 $\Sigma N_ip^i$ ），对每一位的 $N_i$ 和 $m_i$ 分别求组合数，再累乘，注意此处的\textbf{$p$ 必须为质数}
 
 \begin{lstlisting}
 //洛谷P3807 

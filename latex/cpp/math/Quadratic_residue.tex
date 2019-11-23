@@ -1,14 +1,14 @@
 \begin{lstlisting}
 /*
-Çó½âx^2 % P = n£¬µ±PÎªÆæÖÊÊıÊ±£¬¿ÉÓÃÀàËÆĞéÊıÆ½·½µÄ·½·¨Çó½â£¬
-ÀàËÆÊµÊıÓòÒ»Ôª¶ş´Î·½³Ì£¬´ğ°¸¿ÉÄÜÎªÁ½²»Í¬½â£¬Á½ÏàÍ¬½â»òÎŞÊµÊı½â£¬Ïê¼ûsolve()
+æ±‚è§£x^2 % P = nï¼Œå½“Pä¸ºå¥‡è´¨æ•°æ—¶ï¼Œå¯ç”¨ç±»ä¼¼è™šæ•°å¹³æ–¹çš„æ–¹æ³•æ±‚è§£ï¼Œ
+ç±»ä¼¼å®æ•°åŸŸä¸€å…ƒäºŒæ¬¡æ–¹ç¨‹ï¼Œç­”æ¡ˆå¯èƒ½ä¸ºä¸¤ä¸åŒè§£ï¼Œä¸¤ç›¸åŒè§£æˆ–æ— å®æ•°è§£ï¼Œè¯¦è§solve()
 */
-//Âå¹ÈP5491Çó¶ş´ÎÊ£Óà
+//æ´›è°·P5491æ±‚äºŒæ¬¡å‰©ä½™
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
 
-int P;	//Ä£Êı£¬ÎªÁË±ÜÃâ´«²Î¶ø·ÅÔÚÈ«¾Ö±äÁ¿
+int P;	//æ¨¡æ•°ï¼Œä¸ºäº†é¿å…ä¼ å‚è€Œæ”¾åœ¨å…¨å±€å˜é‡
 
 inline ll qpow(ll a,int b){	//a^b%P
 	ll ans=1;
@@ -16,14 +16,14 @@ inline ll qpow(ll a,int b){	//a^b%P
 		if(b&1) ans=ans*a%P;
 return ans;}
 
-ll t,tt;	//ttÎªtµÄÆ½·½¡£×¢Òâ£¡£¡£¡¸´ÊıÀàÖĞÃ¿´Î³Ë·¨¶¼ÒªÓÃµ½tt£¡£¡£¡
-struct CP{	//Çó½â¶ş´ÎÊ£Óà×¨ÓÃµÄÄ§¸Ä¸´ÊıÀà 
+ll t,tt;	//ttä¸ºtçš„å¹³æ–¹ã€‚æ³¨æ„ï¼ï¼ï¼å¤æ•°ç±»ä¸­æ¯æ¬¡ä¹˜æ³•éƒ½è¦ç”¨åˆ°ttï¼ï¼ï¼
+struct CP{	//æ±‚è§£äºŒæ¬¡å‰©ä½™ä¸“ç”¨çš„é­”æ”¹å¤æ•°ç±» 
 	ll x,y;
 	CP(ll x=0,ll y=0):x(x),y(y){}
-	CP operator*=(const CP&r){	//³ËÒÔr£¬Ä£ÊıPÎªÈ«¾Ö±äÁ¿
+	CP operator*=(const CP&r){	//ä¹˜ä»¥rï¼Œæ¨¡æ•°Pä¸ºå…¨å±€å˜é‡
 		return *this = CP((x*r.x%P+y*r.y%P*tt%P)%P,(y*r.x%P+x*r.y%P)%P);
 	}
-	CP qpow(int n){	//n´ÎÃİ£¬Ä£ÊıPÎªÈ«¾Ö±äÁ¿
+	CP qpow(int n){	//næ¬¡å¹‚ï¼Œæ¨¡æ•°Pä¸ºå…¨å±€å˜é‡
 		CP rt = CP(1,0);
 		for(; n; n>>=1){
 			if(n&1) rt *= *this;
@@ -33,11 +33,11 @@ struct CP{	//Çó½â¶ş´ÎÊ£Óà×¨ÓÃµÄÄ§¸Ä¸´ÊıÀà
 	}
 };
 
-int cipolla(int n){	//Çóx*x%P=nµÄÒ»¸ö½â£¬PÊÇÆæÖÊÊı£¬ÎŞ½âÊ±return-1
+int cipolla(int n){	//æ±‚x*x%P=nçš„ä¸€ä¸ªè§£ï¼ŒPæ˜¯å¥‡è´¨æ•°ï¼Œæ— è§£æ—¶return-1
 	if(n==0) return 0; 
-	if(qpow(n,(P-1)>>1)==P-1) return -1;	//ÎŞ½â
-	srand(time(0));	//³õÊ¼»¯Ëæ»úÊıÖÖ×Ó
-	for(;;){	//Ëæ»úÕÒµ½Ò»¸öÂú×ãbreakÌõ¼şµÄt¼´¿É 
+	if(qpow(n,(P-1)>>1)==P-1) return -1;	//æ— è§£
+	srand(time(0));	//åˆå§‹åŒ–éšæœºæ•°ç§å­
+	for(;;){	//éšæœºæ‰¾åˆ°ä¸€ä¸ªæ»¡è¶³breakæ¡ä»¶çš„tå³å¯ 
 		t=rand()%P;
 		tt=(t*t%P-n+P)%P;
 		if(qpow(tt,(P-1)>>1)==P-1) break;
@@ -47,9 +47,9 @@ int cipolla(int n){	//Çóx*x%P=nµÄÒ»¸ö½â£¬PÊÇÆæÖÊÊı£¬ÎŞ½âÊ±return-1
 }
 
 inline void solve(){
-	int n; scanf("%d%d",&n,&P);	//×¢ÒâPÊÇÈ«¾Ö±äÁ¿£¬Ö®ºó¾Í²»´«²ÎÁË 
+	int n; scanf("%d%d",&n,&P);	//æ³¨æ„Pæ˜¯å…¨å±€å˜é‡ï¼Œä¹‹åå°±ä¸ä¼ å‚äº† 
 	int ans=cipolla(n);
-	int ans2=(P-ans)%P;	//´Ë´¦È¡Ä£´¿´âÊÇÎªÁË±ÜÃâansÎª0Ê±ans2ÎªP
+	int ans2=(P-ans)%P;	//æ­¤å¤„å–æ¨¡çº¯ç²¹æ˜¯ä¸ºäº†é¿å…ansä¸º0æ—¶ans2ä¸ºP
 	if(ans==-1) return puts("Hola!"), void(); 
 	if(ans2<ans) swap(ans,ans2);
 	if(ans!=ans2) printf("%d %d\n",ans,ans2);

@@ -1,0 +1,126 @@
+\begin{lstlisting}
+#include <bits/stdc++.h>
+//CF 786B
+
+/*
+	建立两棵线段树分别表示出区间和入区间
+	第1到n标号的节点表示原来的n个点
+*/
+
+using namespace std;
+const int N=1e6+5;//original N=1e5
+typedef long long ll;
+const ll inf=0x3f3f3f3f3f3f3f3f;
+typedef pair<ll,int> pli;
+
+int n,q,s;
+ll ans[N];
+vector<int> e[N];
+vector<ll> val[N];
+bool vis[N];
+
+void add(int x,int y,int z)
+{
+	e[x].push_back(y);
+	val[x].push_back(z);
+}
+
+int cnt;
+struct seg
+{
+	int id[N];
+	void up(int p,bool flg)
+	{
+		int u=id[p];
+		int v=id[p<<1];
+		if(flg) swap(u,v);
+		add(u,v,0ll);
+		u=id[p];
+		v=id[p<<1|1];
+		if(flg) swap(u,v);
+		add(u,v,0ll);
+	}
+	void build(int flg,int p=1,int l=1,int r=n)
+	{
+		id[p]=++cnt;
+		if(l==r)
+		{
+			int u=id[p];
+			int v=l;
+			if(flg) swap(u,v);
+			add(u,v,0ll);
+			return;
+		}
+		int m=l+r>>1;
+		build(flg,p<<1,l,m);
+		build(flg,p<<1|1,m+1,r);
+		up(p,flg);
+	}
+	void segadd(int u,ll w,int L,int R,bool flg,int p=1,int l=1,int r=n)
+	{
+		if(L<=l&&r<=R)
+		{
+			int v=id[p];
+			if(flg) swap(u,v);
+			add(u,v,w);
+			return;
+		}
+		int m=l+r>>1;
+		if(L<=m) segadd(u,w,L,R,flg,p<<1,l,m);
+		if(R>m) segadd(u,w,L,R,flg,p<<1|1,m+1,r);
+	}
+}in,out;
+
+void dij()
+{
+	priority_queue<pli,vector<pli>,greater<pli>> q;
+	q.emplace(0ll,s);
+	memset(ans,0x3f3f,sizeof(ans));
+	ans[s]=0;
+	while(!q.empty())
+	{
+		int t=q.top().second;q.pop();
+		if(vis[t]) continue;
+		vis[t]=1;
+		for(int i=0;i<e[t].size();++i)
+		{
+			int y=e[t][i];
+			ll v=val[t][i];
+			if(ans[t]+v<ans[y])
+			{
+				ans[y]=ans[t]+v;
+				q.emplace(ans[y],y);
+			}
+		}
+	}
+	for(int i=1;i<=n;++i)
+		printf("%lld ",(ans[i]==inf?-1ll:ans[i]));
+}
+
+int main()
+{
+	scanf("%d%d%d",&n,&q,&s);
+	cnt=n;
+	//the first n points won't change
+	in.build(0);
+	out.build(1);
+	//in tree no flip,out tree must flip
+	for(int i=1;i<=q;++i)
+	{
+		int t,v,u,l,r;
+		ll w;
+		scanf("%d",&t);
+		if(t==1)
+		{
+			scanf("%d%d%lld",&v,&u,&w);
+			l=r=u;
+			t=2;
+		}
+		else scanf("%d%d%d%lld",&v,&l,&r,&w);
+		if(t==2) in.segadd(v,w,l,r,0);
+		else if(t==3) out.segadd(v,w,l,r,1);
+	}
+	dij();
+	return 0;
+}
+\end{lstlisting}

@@ -1,15 +1,15 @@
-Ä£Êı $P$ ²»ÊÇÖÊÊıÊ±²»ÄÜÊ¹ÓÃÂ¬¿¨Ë¹¶¨Àí¼ÆËã×éºÏÊı£¡
-¿É¶Ô $P$ ×öÖÊÒò×Ó·Ö½â£¬¶Ô¸÷ÖÊÒò×Ó·Ö±ğÇó½â×éºÏÊı£¬µÃµ½Í¬Óà·½³Ì×é£¬ÔÙÓÃCRTÇó½â¡£
-¾ßÌå·½·¨ÊÇ½« $P$ ·Ö½â³É $\Sigma p^k$ µÄĞÎÊ½£¬ÔÙ¼ÆËãÄ£ $p^k$ ÒâÒåµÄ½×³Ë¡£ 
-ÓÉÓÚ $n \gt p$ Ê±±©Á¦Ëã $n! \mod p$ Îª0£¬Òò´Ë¼ÆËã½×³ËÊ±ĞèÏÈ²»¶Ïµİ¹é·Ö¿é¸ø½×³Ë³ıÒÔÖÊÒò×Ó $p$£¬
-ËãÍê½×³ËºóÔÙ°Ñ³ıµôµÄ $p$ ³Ë»ØÈ¥£¬²ÅÄÜ¼ÆËã³öÄ£ $p^k$ ÒâÒåµÄ×éºÏÊı¡£ 
+æ¨¡æ•° $P$ ä¸æ˜¯è´¨æ•°æ—¶ä¸èƒ½ä½¿ç”¨å¢å¡æ–¯å®šç†è®¡ç®—ç»„åˆæ•°ï¼\\
+å¯å¯¹ $P$ åšè´¨å› å­åˆ†è§£ï¼Œå¯¹å„è´¨å› å­åˆ†åˆ«æ±‚è§£ç»„åˆæ•°ï¼Œå¾—åˆ°åŒä½™æ–¹ç¨‹ç»„ï¼Œå†ç”¨CRTæ±‚è§£ã€‚\\
+å…·ä½“æ–¹æ³•æ˜¯å°† $P$ åˆ†è§£æˆ $\Sigma p^k$ çš„å½¢å¼ï¼Œå†è®¡ç®—æ¨¡ $p^k$ æ„ä¹‰çš„é˜¶ä¹˜ã€‚ \\
+ç”±äº $n > p$ æ—¶æš´åŠ›ç®— $n! \mod p$ ä¸º0ï¼Œå› æ­¤è®¡ç®—é˜¶ä¹˜æ—¶éœ€å…ˆä¸æ–­é€’å½’åˆ†å—ç»™é˜¶ä¹˜é™¤ä»¥è´¨å› å­ $p$ï¼Œ
+ç®—å®Œé˜¶ä¹˜åå†æŠŠé™¤æ‰çš„ $p$ ä¹˜å›å»ï¼Œæ‰èƒ½è®¡ç®—å‡ºæ¨¡ $p^k$ æ„ä¹‰çš„ç»„åˆæ•°ã€‚ 
 \begin{lstlisting}
-//Âå¹ÈP4720
+//æ´›è°·P4720
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
 
-inline ll qpow(ll a,ll b,int P){	//a^b%P£¬´ËÌâÖĞb¿ÉÄÜ±¬int
+inline ll qpow(ll a,ll b,int P){	//a^b%Pï¼Œæ­¤é¢˜ä¸­bå¯èƒ½çˆ†int
 	ll ans=1;
 	for(;b;b>>=1,a=a*a%P)
 		if(b&1) ans=ans*a%P;
@@ -21,20 +21,20 @@ inline ll exgcd(ll a, ll b, ll &x, ll &y){
 	ll z=x; x=y; y=z-a/b*y;
 return g;}
 
-inline ll exinv(int a,int P){	//ÓÃexgcdÇóaÄ£PµÄÄæÔª 
+inline ll exinv(int a,int P){	//ç”¨exgcdæ±‚aæ¨¡Pçš„é€†å…ƒ 
 	ll x,y;
 	if(exgcd(a,P,x,y)!=1) return -1;
 	else return (x%P+P)%P;
 }
 
-inline int g(ll n,int p){	//n!ÖĞÖÊÒò×ÓpµÄ´ÎÊı
+inline int g(ll n,int p){	//n!ä¸­è´¨å› å­pçš„æ¬¡æ•°
 	if(n<p) return 0;
 	return n/p+g(n/p,p);
 }
 
-int f(ll n,int p,int pk){	//n!/(p^x) % pk£¬ÆäÖĞx=g(n,p)
+int f(ll n,int p,int pk){	//n!/(p^x) % pkï¼Œå…¶ä¸­x=g(n,p)
 	if(n==0) return 1;
-	ll s=1, s2=1;	//<=pkµÄ·Ö¿é³Ë»ı£¬>pkµÄ¿éÍâ³Ë»ı
+	ll s=1, s2=1;	//<=pkçš„åˆ†å—ä¹˜ç§¯ï¼Œ>pkçš„å—å¤–ä¹˜ç§¯
 	for(ll i=1; i<=pk; ++i)
 		if(i%p) s=s*i%pk;
 	s=qpow(s,n/pk,pk);
@@ -53,7 +53,7 @@ inline ll c(ll N,ll m,int p,int pk){	//C^m_N % (p^k)
 	return rt;
 }
 
-inline ll crt(ll ai,int p,int pk,int P){	//x%(pi^ki)=ai£¬pk³Ë»ı=P
+inline ll crt(ll ai,int p,int pk,int P){	//x%(pi^ki)=aiï¼Œpkä¹˜ç§¯=P
 	return ai*(P/pk)%P*exinv(P/pk,pk)%P;
 //	return ai*(P/pk)%P*qpow(P/pk,pk/p*(p-1)-1,pk)%P;
 }

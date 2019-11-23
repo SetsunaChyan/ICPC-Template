@@ -1,6 +1,6 @@
 \begin{lstlisting}
-//´óÖÂÔ­ÀíÊÇcdq·ÖÖÎÌ×NTTÇóf_i = fºÍgµÄÇ°iÏî¾í»ı
-//Âå¹ÈP4721Çóf_i = \sigma_{j=1]^i f_{i-j} * g_j 
+//å¤§è‡´åŸç†æ˜¯cdqåˆ†æ²»å¥—NTTæ±‚f_i = få’Œgçš„å‰ié¡¹å·ç§¯
+//æ´›è°·P4721æ±‚f_i = \sigma_{j=1]^i f_{i-j} * g_j 
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
@@ -27,13 +27,13 @@ int qpow(ll a, int b){
 inline int inv(ll value){ return qpow(value, P-2); }
 
 namespace NTT{
-	int R[MN];	//01´®Äæ×ªºó¶ÔÓ¦µÄÏÂ±ê
-	void calcR(int len){	//¼ÆËãlen´Î¶àÏîÊ½µÄRÊı×é
+	int R[MN];	//01ä¸²é€†è½¬åå¯¹åº”çš„ä¸‹æ ‡
+	void calcR(int len){	//è®¡ç®—lenæ¬¡å¤šé¡¹å¼çš„Ræ•°ç»„
 		int loglen = R[0] = 0;
 		while(1<<loglen < len) ++loglen;
 		for(int i=1; i<len; ++i) R[i] = (R[i>>1] >>1) | ((i&1)<< loglen-1);
 	}
-	void ntt(int *a, int n, int f=1){	//fÈ¡-1Ê±ÊÇÄæ±ä»»
+	void ntt(int *a, int n, int f=1){	//få–-1æ—¶æ˜¯é€†å˜æ¢
 		for(int i=0; i<n; ++i) if(R[i] < i) swap(a[i],a[R[i]]);
 		int baseW = qpow(G, (P-1) / n);
 		if(f==-1) baseW = inv(baseW);
@@ -51,7 +51,7 @@ namespace NTT{
 			}
 		}
 	}
-	void mult(int *a, int *b, int len){	//·â×°ºÃµÄlen´Î¶àÏîÊ½³Ë·¨£¬´ğ°¸´æ½øa
+	void mult(int *a, int *b, int len){	//å°è£…å¥½çš„lenæ¬¡å¤šé¡¹å¼ä¹˜æ³•ï¼Œç­”æ¡ˆå­˜è¿›a
 		calcR(len);
 		ntt(a,len);
 		ntt(b,len);
@@ -63,18 +63,18 @@ namespace NTT{
 }
 using namespace NTT;
 
-int f[MN],g[MN],A[MN],B[MN];	//Êä³öÊäÈë¼°Æä¸±±¾
-int n;	//¶àÏîÊ½³¤¶È
+int f[MN],g[MN],A[MN],B[MN];	//è¾“å‡ºè¾“å…¥åŠå…¶å‰¯æœ¬
+int n;	//å¤šé¡¹å¼é•¿åº¦
 
-void cdq(int l, int r){	//·ÖÖÎ[l,r]
+void cdq(int l, int r){	//åˆ†æ²»[l,r]
 	if(l==r) return;
 	int mid = l+r >> 1, len = 1;
 	while(len < r-l) len <<= 1;
 	cdq(l,mid);
 	for(int i=0; i<len; ++i) A[i] = 0, B[i] = 0;
-	for(int i=0; i<=mid-l; ++i) A[i] = f[l+i];	//l¿ªÊ¼µÄµ±Ç°Çø¼äµÄ×ó°ëf
-	for(int i=0; i<r-l; ++i)  B[i] = g[i+1];	//1¿ªÊ¼µÄµ±Ç°Çø¼ä³¤¶ÈµÄg
-	mult(A,B,len);	//¾í»ıÇó³ö×ó°ë¶ËµÄ¹±Ï×
+	for(int i=0; i<=mid-l; ++i) A[i] = f[l+i];	//lå¼€å§‹çš„å½“å‰åŒºé—´çš„å·¦åŠf
+	for(int i=0; i<r-l; ++i)  B[i] = g[i+1];	//1å¼€å§‹çš„å½“å‰åŒºé—´é•¿åº¦çš„g
+	mult(A,B,len);	//å·ç§¯æ±‚å‡ºå·¦åŠç«¯çš„è´¡çŒ®
 	for(int i=mid+1; i<=r; ++i) f[i] = (f[i] + A[i-l-1]) % P;
 	cdq(mid+1,r);
 }
@@ -82,7 +82,7 @@ void cdq(int l, int r){	//·ÖÖÎ[l,r]
 int main(){
 	n = read();
 	for(int i=1; i<n; ++i) g[i] = read();
-	f[0] = 1;	//ÌâÄ¿¸øµÄ³õÖµ
+	f[0] = 1;	//é¢˜ç›®ç»™çš„åˆå€¼
 	cdq(0,n-1);
 	for(int i=0; i<n; ++i) printf("%d ",f[i]);
 	return 0;

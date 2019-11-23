@@ -1,13 +1,13 @@
 \begin{lstlisting}
 /* 
-����ԭ������P=998244353��g=3��g��n����ģP�ɵõ�P��ֵ����gΪģP��ԭ��
-O(NlogN)�ؽ�һ��N�ζ���ʽϵ������ʽת���ɹ���ģP��ԭ����g�Ĵ��ݵ�N����ֵ 
-����������ʽ�ĵ�ֵ���˷����õ��µĵ�ֵ����ʽ����O(NlogN)��ת��ϵ������ʽ
-����R����͡��������������Խ��ݹ�NTT����תΪѭ�����̣��Ż����Ӷȵĳ���
-д�ú��ң���ӭ�пյ�ͬѧ�����¸��ÿ����
-˳��һ������ͷ������õ���ϸ�ڲ�ͬ����������ʵ�ֵ�NTT������Ҳ������
+大致原理：令P=998244353，g=3，g的n次幂模P可得到P种值，称g为模P的原根
+O(NlogN)地将一个N次多项式系数表达式转化成关于模P的原根的g的次幂的N个点值 
+对两个多项式的点值做乘法，得到新的点值表达式，再O(NlogN)地转回系数表达式
+利用R数组和“蝴蝶定理”可以将递归NTT过程转为循环过程，优化复杂度的常数
+写得很乱，欢迎有空的同学来更新个好看点的
+顺带一提求逆和分治里用的是细节不同的另外两种实现的NTT，不过也都很乱
 */
-//���P3803��Ķ���ʽ�˻����ڴ������µı��ֿ��ܷ�������FFT
+//洛谷P3803裸的多项式乘积，在大数据下的表现可能反而不如FFT
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
@@ -39,9 +39,9 @@ void write(int x){
 }
 
 int a[MN],b[MN],c[MN];
-int N,M,n,ln;	//�����ʽ�������Ҷ���ʽ������fft��������λ��
-int R[MN];	//01����ת���Ӧ���±�
-inline void calR(){	//ͨ��NM��ʼ����������
+int N,M,n,ln;	//左多项式次数，右多项式次数，fft次数及其位数
+int R[MN];	//01串逆转后对应的下标
+inline void calR(){	//通过NM初始化以上数据
 	n=1;
 	while(n<=N+M) n<<=1, ++ln;
 	for(int i=1; i<n; ++i) R[i] = (R[i>>1] >>1) | ((i&1)<< ln-1);
@@ -52,12 +52,12 @@ inline void init(){
 	for(int i=0; i<=M; ++i) b[i]=read();
 	calR();
 }
-void ntt(int c[], int f=1){	//fȡ-1ʱ����任
+void ntt(int c[], int f=1){	//f取-1时是逆变换
 	for(int i=0; i<n; ++i) if(i<R[i]) swap(c[i], c[R[i]]);
 	for(int j=1; j<n; j<<=1){
 		int j2=j<<1;
 		int rt=qpow(3,(P-1)/j2);
-		if(f==-1) rt=qpow(rt, P-2);	//��任ʱ����rt��������rt��Ԫ
+		if(f==-1) rt=qpow(rt, P-2);	//逆变换时除以rt，即乘以rt逆元
 		for(int k=0; k<n; k+=j2){
 			int t=1;
 			for(int l=0; l<j; ++l){

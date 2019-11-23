@@ -1,24 +1,24 @@
-·ÑÂíĞ¡¶¨Àí£º $p$ ÎªÖÊÊıÊ±£¬$$a^{p-1} \equiv 1 (\mod p) $$
-Å·À­¶¨Àí£º**$a,p$ »¥ÖÊÊ±**£¬ $$a^{\phi(p)} \equiv 1 (\mod p) $$ 
-À©Õ¹Å·À­¶¨Àí£º **$a,p$ ²»»¥ÖÊÊ±**£¬ $$a^b\equiv
+è´¹é©¬å°å®šç†ï¼š $p$ ä¸ºè´¨æ•°æ—¶ï¼Œ$$a^{p-1} \equiv 1 (\mod p) $$
+æ¬§æ‹‰å®šç†ï¼š\textbf{$a,p$ äº’è´¨æ—¶}ï¼Œ $$a^{\phi(p)} \equiv 1 (\mod p) $$ 
+æ‰©å±•æ¬§æ‹‰å®šç†ï¼š \textbf{$a,p$ ä¸äº’è´¨æ—¶}ï¼Œ $$a^b\equiv
 \begin{cases}
 a^{b \mod \phi(p) + \phi(p)} & {b \ge \phi(p)}\\
-a^b & {0 \le b \lt \phi(p)}
+a^b & {0 \le b < \phi(p)}
 \end{cases}
 (\mod p)$$
 \begin{lstlisting}
-//SP10050:ÓÃÀ©Õ¹Å·À­¶¨ÀíÇó³Ë·½Ëşa^a^a¡­¡­(b¸öa)µÄºó¾ÅÎ»Êı
+//SP10050:ç”¨æ‰©å±•æ¬§æ‹‰å®šç†æ±‚ä¹˜æ–¹å¡”a^a^aâ€¦â€¦(bä¸ªa)çš„åä¹ä½æ•°
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
 
 struct ST{
 	int v;
-	bool ge;	//´óÓÚµÈÓÚÄ£ÊıÓë·ñ
+	bool ge;	//å¤§äºç­‰äºæ¨¡æ•°ä¸å¦
 	ST(int v=0,bool g=0): v(v), ge(g) {} 
 };
 
-ST qpow(ll a,ll b,int p){	//¿ìËÙÃİ¹ı³ÌÖĞÈ¡Ä£¹ıp iff ·µ»ØÖµ.ge==1
+ST qpow(ll a,ll b,int p){	//å¿«é€Ÿå¹‚è¿‡ç¨‹ä¸­å–æ¨¡è¿‡p iff è¿”å›å€¼.ge==1
 	ll ans=1ll;
 	bool ge=0;
 	while(b){
@@ -27,16 +27,16 @@ ST qpow(ll a,ll b,int p){	//¿ìËÙÃİ¹ı³ÌÖĞÈ¡Ä£¹ıp iff ·µ»ØÖµ.ge==1
 			ge |= ans>=p,
 			ans%=p;
 		b>>=1;
-		if(!b) break;	//·ÀÖ¹±»Ã»ÓĞ³Ëµ½µÄa¸üĞÂge
+		if(!b) break;	//é˜²æ­¢è¢«æ²¡æœ‰ä¹˜åˆ°çš„aæ›´æ–°ge
 		a*=a;
-		ge |= a>=p,	//×¢Òâans*È¡ÓàºóµÄa¿ÉÄÜ¸üĞÂ²»ÁËge£¬ÔÚÕâÒ²Òª¸üĞÂ 
+		ge |= a>=p,	//æ³¨æ„ans*å–ä½™åçš„aå¯èƒ½æ›´æ–°ä¸äº†geï¼Œåœ¨è¿™ä¹Ÿè¦æ›´æ–° 
 		a%=p;
 	}
 	return ST(ans,ge);
 }
 
 map<int,int>eu;
-ll euler(ll n){	//Å·À­º¯ÊıÖµ
+ll euler(ll n){	//æ¬§æ‹‰å‡½æ•°å€¼
 	if(eu[n]) return eu[n];
 	ll n0=n, ans=n, ed=sqrt(n);
 	for(int i=2; i<=ed; ++i)
@@ -48,13 +48,13 @@ ll euler(ll n){	//Å·À­º¯ÊıÖµ
 	return eu[n0]=ans;
 }
 
-ST tower(ll a,ll b,int p){	//¼ÆËãb²ãaÈ¡ÓàpµÄÖµ 
-	if(p==1) return ST(0,1);	//ÌØÅĞÈ¡Ä£1µÄÌØÊâÇé¿ö 
-	if(a==1) return ST(1,0);	//ÌØÅĞ²»È¡Ä£1µ«µ×Îª1µÄÌØÊâÇé¿ö
-	if(b==1) return a<p? ST(a,0): ST(a%p,1);	//µİ¹éÖÕµã
+ST tower(ll a,ll b,int p){	//è®¡ç®—bå±‚aå–ä½™pçš„å€¼ 
+	if(p==1) return ST(0,1);	//ç‰¹åˆ¤å–æ¨¡1çš„ç‰¹æ®Šæƒ…å†µ 
+	if(a==1) return ST(1,0);	//ç‰¹åˆ¤ä¸å–æ¨¡1ä½†åº•ä¸º1çš„ç‰¹æ®Šæƒ…å†µ
+	if(b==1) return a<p? ST(a,0): ST(a%p,1);	//é€’å½’ç»ˆç‚¹
 	int phip=euler(p);
-	ST ans=tower(a,b-1,phip);	//µİ¹é¼ÆËãÈ¡ÓàphipºóµÄÖ¸Êı
-	if(ans.ge) ans.v+=phip;	//À©Õ¹Å·À­¶¨Àí 
+	ST ans=tower(a,b-1,phip);	//é€’å½’è®¡ç®—å–ä½™phipåçš„æŒ‡æ•°
+	if(ans.ge) ans.v+=phip;	//æ‰©å±•æ¬§æ‹‰å®šç† 
 	return qpow(a, ans.v, p);
 }
 

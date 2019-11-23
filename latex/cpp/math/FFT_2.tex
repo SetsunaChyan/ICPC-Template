@@ -1,11 +1,11 @@
 \begin{lstlisting}
 /* 
-����ԭ����O(NlogN)�ؽ�һ��N�ζ���ʽϵ������ʽת���ɹ���(1��N�θ�����)��N����ֵ
-����������ʽ�ĵ�ֵ���˷����õ��µĵ�ֵ����ʽ����O(NlogN)��ת��ϵ������ʽ
-����R����͡��������������Խ��ݹ�FFT����תΪѭ�����̣��Ż����Ӷȵĳ���
-д�ú��ң���ӭ�пյ�ͬѧ�����¸��ÿ����
+大致原理：O(NlogN)地将一个N次多项式系数表达式转化成关于(1的N次复数根)的N个点值
+对两个多项式的点值做乘法，得到新的点值表达式，再O(NlogN)地转回系数表达式
+利用R数组和“蝴蝶定理”可以将递归FFT过程转为循环过程，优化复杂度的常数
+写得很乱，欢迎有空的同学来更新个好看点的
 */
-//���P3803��Ķ���ʽ�˻���������(a+bi)^2 = (a^2-b^2) + 2abi���ٱ任����
+//洛谷P3803裸的多项式乘积，利用了(a+bi)^2 = (a^2-b^2) + 2abi减少变换次数
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
@@ -15,7 +15,7 @@ const int MN = 3e6 + 5;
 const db pi = acos(-1);
 
 struct CP{
-	db x,y;	//ʵ�����鲿
+	db x,y;	//实部，虚部
 	CP (db x=0, db y=0): x(x), y(y) {}
 	CP operator+(CP &t){ return CP(x+t.x, y+t.y); }
 	CP operator-(CP &t){ return CP(x-t.x, y-t.y); }
@@ -37,9 +37,9 @@ void write(int x){
 	while(top) putchar(s[top--]+'0');
 }
 
-int N,M,n,ln;	//�����ʽ�������Ҷ���ʽ������fft��������λ��
-int R[MN];	//01����ת���Ӧ���±�
-inline void calR(){	//ͨ��NM��ʼ����������
+int N,M,n,ln;	//左多项式次数，右多项式次数，fft次数及其位数
+int R[MN];	//01串逆转后对应的下标
+inline void calR(){	//通过NM初始化以上数据
 	n=1;
 	while(n<=N+M) n<<=1, ++ln;
 	for(int i=1; i<n; ++i) R[i] = (R[i>>1] >>1) | ((i&1)<< ln-1);
@@ -50,7 +50,7 @@ inline void init(){
 	for(int i=0; i<=M; ++i) a[i].y=read();
 	calR();
 }
-void fft(CP c[], int f=1){	//fȡ-1ʱ����任
+void fft(CP c[], int f=1){	//f取-1时是逆变换
 	for(int i=0; i<n; ++i) if(i<R[i]) swap(c[i], c[R[i]]);
 	for(int j=1; j<n; j<<=1){
 		CP wn(cos(pi/j), f*sin(pi/j));

@@ -50,11 +50,11 @@
 %========================页眉、页脚、代码格式设置=======================%
 
 %===============================标题和目录==============================%
-\title{\CJKfamily{hei} \bfseries 小小青蛙听风就是雨}
+\title{\CJKfamily{hei} \bfseries 「明治十七年的上海爱丽丝」}
 \author{HiedanoAkyuu、Oneman233、KR12138}
 \renewcommand{\today}{\number\year 年 \number\month 月 \number\day 日}
 
-\begin{document}\small
+\begin{document} \small
 \begin{titlepage}
 \maketitle
 \end{titlepage}
@@ -111,7 +111,7 @@
 		\subsubsection{负环}
 			\addcpp{graph/spfa_negative_circle}
 		\subsubsection{差分约束}
-			%\addcpp{}
+			\addcpp{graph/difference_constrain}
 	\subsection{最小生成树}
 		\subsubsection{Prim}
 			\addcpp{graph/prim}
@@ -120,9 +120,9 @@
 		\subsubsection{最小生成树计数}
 			%\addcpp{}
 		\subsubsection{次小生成树}
-			%\addcpp{}
+			\addcpp{graph/second_MST}
 		\subsubsection{最小乘积生成树}
-			%\addcpp{}
+			\addcpp{graph/multiply_MST}
 	\subsection{树的直径}
 		%\addcpp{}
 	\subsection{LCA}
@@ -148,7 +148,7 @@
 	\subsection{二分图}
 		\subsubsection{最大匹配-匈牙利}		
 			\addcpp{graph/hungary}
-		\subsubsection{带权匹配-KM}
+		\subsubsection{带权匹配-KM} %出锅 待修
 			\addcpp{graph/KM}
 		%\subsubsection{最小点覆盖}
 		%\subsubsection{最大独立集}
@@ -174,10 +174,14 @@
 	\subsection{线段树}
 		\subsubsection{带优先级线段树}
 			%\addcpp{}
+		\subsubsection{李超线段树}
+			\addcpp{datastruct/lichao_seg} %x
 		\subsubsection{吉司机线段树}
 			\addcpp{datastruct/minSeg}
 		\subsubsection{线段树维护扫描线}
-			%\addcpp{}
+			\addcpp{datastruct/scanline} %x
+		\subsubsection{区间图}
+			\addcpp{datastruct/interval_dij}
 	\subsection{RMQ}
 		\subsubsection{一维}
 			\addcpp{datastruct/ST}
@@ -193,6 +197,8 @@
 			\addcpp{datastruct/treap}
 		\subsubsection{Splay}
 			%\addcpp{}
+		\subsubsection{红黑树-pbds}
+			\addcpp{datastruct/rbt_pbds}
 	\subsection{动态树}
 		%\addcpp{}
 	\subsection{主席树}
@@ -203,7 +209,7 @@
 		\subsubsection{树状数组套线段树}
 			\addcpp{datastruct/fenwick_seg}
 	\subsection{K-D Tree}
-		%\addcpp{}
+		\addcpp{datastruct/kdtree} 
 	\subsection{分治}
 		\subsubsection{CDQ}
 			\addcpp{datastruct/cdq_strictly}
@@ -249,7 +255,7 @@
 			\addcpp{math/Miller-Rabin}
 	\subsection{质因数分解}
 		\subsubsection{Pollard-Rho}
-			\addcpp{Pollard-rho}
+			\addcpp{math/Pollard-rho}
 	\subsection{逆元}
 		\subsubsection{EX-GCD求逆元}
 			\addcpp{math/EXGCD_INV}
@@ -322,6 +328,9 @@
 		​	\addcpp{math/Lucas}
 		​\subsubsection{EXLucas(分块实现)}
 		​	\addcpp{math/EXLucas}
+	\subsection{博弈论}
+		\subsubsection{SG函数}
+			\addcpp{math/SG}
 
 \section{其他}
 	\subsection{快读快写}

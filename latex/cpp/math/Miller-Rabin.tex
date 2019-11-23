@@ -1,9 +1,8 @@
-
-$$¶þ´ÎÌ½²â£º0<x<p,pÊÇÖÊÊý x^2 \equiv 1(\mod p) \Leftrightarrow x=1»òx=p-1$$
-$$·ÑÂíÌ½²â£º0<a<p,pÊÇÖÊÊý \Rightarrow a^{p-1} \equiv 1(\mod p)$$
-ÅÐ´í¸ÅÂÊ²»³¬¹ý $4^{-S}(SÎª²âÊÔ´ÎÊý)$£¬Ê±¼ä¸´ÔÓ¶È $O£¨S*logn£©$
+$$äºŒæ¬¡æŽ¢æµ‹ï¼š0<x<p,pæ˜¯è´¨æ•° x^2 \equiv 1(\mod p) \Leftrightarrow x=1æˆ–x=p-1$$
+$$è´¹é©¬æŽ¢æµ‹ï¼š0<a<p,pæ˜¯è´¨æ•° \Rightarrow a^{p-1} \equiv 1(\mod p)$$
+åˆ¤é”™æ¦‚çŽ‡ä¸è¶…è¿‡ $4^{-S}(Sä¸ºæµ‹è¯•æ¬¡æ•°)$ï¼Œæ—¶é—´å¤æ‚åº¦ $Oï¼ˆS*lognï¼‰$
 \begin{lstlisting}
-//HDU2138¶à×éÊäÈëÅÐ¶Ïn¸öÊýÖÐ¼¸¸öÊÇÖÊÊý
+//HDU2138å¤šç»„è¾“å…¥åˆ¤æ–­nä¸ªæ•°ä¸­å‡ ä¸ªæ˜¯è´¨æ•°
 #include <cstdio>
 #include <cstdlib>
 #include <ctime>
@@ -17,9 +16,9 @@ inline ll qpow(ll a, ll b, ll P){	//a^b%P
 		if(b&1) ans=ans*a%P;
 return ans;}
 
-inline bool MR(int tc, ll n){	//ÓÃËæ»ú²âÊÔÊý¾Ýtc²ân£¬·µ»ØnÊÇÖÊÊý?1:0
+inline bool MR(int tc, ll n){	//ç”¨éšæœºæµ‹è¯•æ•°æ®tcæµ‹nï¼Œè¿”å›žnæ˜¯è´¨æ•°?1:0
 	ll u=n-1, t=0;
-	while(!(u&1)) ++t, u>>=1;	//°Ñn-1±íÊ¾Îªu*2^t£¬Ñ­»·µ½uÎªÆæÊýÎªÖ¹
+	while(!(u&1)) ++t, u>>=1;	//æŠŠn-1è¡¨ç¤ºä¸ºu*2^tï¼Œå¾ªçŽ¯åˆ°uä¸ºå¥‡æ•°ä¸ºæ­¢
 	ll x=qpow(tc,u,n);
 	if(x==1) return 1;
 	for(int i=1; i<=t; ++i,x=x*x%n)
@@ -27,9 +26,9 @@ inline bool MR(int tc, ll n){	//ÓÃËæ»ú²âÊÔÊý¾Ýtc²ân£¬·µ»ØnÊÇÖÊÊý?1:0
 	return x==1;
 }
 
-mt19937_64 rnd(time(0));	//c++11µÄstdµÄÄ§·¨£¬ÏÂÎÄ¿ÉÓÃrnd()Éú³É[0,2^64)
+mt19937_64 rnd(time(0));	//c++11çš„stdçš„é­”æ³•ï¼Œä¸‹æ–‡å¯ç”¨rnd()ç”Ÿæˆ[0,2^64)
 
-inline bool isPrime(ll n, int S=10){	//¶Ôn²âÊÔS´Î£¬·µ»ØnÊÇÖÊÊý?1:0
+inline bool isPrime(ll n, int S=10){	//å¯¹næµ‹è¯•Sæ¬¡ï¼Œè¿”å›žnæ˜¯è´¨æ•°?1:0
 	if(n==2) return 1;
 	if(n<2 || !(n&1)) return 0;
 //	srand(time(0));

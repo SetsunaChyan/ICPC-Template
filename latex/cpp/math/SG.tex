@@ -1,0 +1,50 @@
+\begin{lstlisting}
+#include <bits/stdc++.h>
+//Gym 101128 G
+using namespace std;
+const int N=1005;
+
+int p,k;
+vector<int> v(N);
+int sg[N];
+bool vis[N];
+
+void gao(int n)
+{
+	memset(sg,0,sizeof(sg));
+	for(int i=1;i<=n;++i)//由小到大枚举
+	{
+		memset(vis,0,sizeof(vis));
+		for(int j=0;j<=min(i,k);++j)
+		{
+			if(i==j) continue;
+			int tmp=i-j-v[i-j];//枚举子状态
+			if(tmp>=0)
+				vis[sg[tmp]]=1;
+		}
+		for(int j=0;;j++)
+			if(!vis[j])
+			{
+				sg[i]=j;
+				break;
+			}
+	}
+}
+
+int main()
+{
+	int ans=0;
+	scanf("%d%d",&p,&k);
+	for(int i=1,n;i<=p;++i)
+	{
+		scanf("%d",&n);
+		for(int j=1;j<=n;++j)
+			scanf("%d",&v[j]);
+		gao(n);
+		ans^=sg[n];//多堆求每一堆的异或值即可
+	}
+	if(ans==0) puts("Bob will win.");//先手必败
+	else puts("Alice can win.");
+	return 0;
+}
+\end{lstlisting}

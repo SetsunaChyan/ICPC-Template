@@ -1,0 +1,13 @@
+\begin{lstlisting}
+#include <ext/pb_ds/tree_policy.hpp>
+#include <ext/pb_ds/assoc_container.hpp>
+using namespace __gnu_pbds;
+tree<pii,null_type,less<pii>,rb_tree_tag,tree_order_statistics_node_update> t;
+
+t.insert({x,i+1});                 //插入x，用独特的正整数i+1标注（因为erase太辣鸡）
+t.erase(t.lower_bound({x,0}));     //删除x（删除单个元素）
+t.order_of_key({x,0})+1;           //x的排名（小于x的元素个数+1）
+t.find_by_order(x-1)->first;       //排名为x的元素（第x小的数）
+prev(t.lower_bound({x,0}))->first; //x的前驱（小于x且最大）
+t.lower_bound({x+1,0})->first;     //x的后继（大于x且最小）
+\end{lstlisting}

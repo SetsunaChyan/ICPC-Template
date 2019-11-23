@@ -1,0 +1,127 @@
+\begin{lstlisting}
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+//luogu P5540
+
+/*
+	每条边有两个边权
+	使得一棵生成树sigma(ai)*sigma(bi)最小
+*/
+
+const int N=205;
+const int M=10005;
+const int inf=0x3f3f3f3f;
+
+struct UFS
+{
+	int f[N];
+	void init(int n)
+	{
+		for(int i=1;i<=n;++i)
+			f[i]=i;
+	}
+	int find(int x)
+	{
+		if(x!=f[x]) f[x]=find(f[x]);
+		return f[x];
+	}
+	void merge(int x,int y)
+	{
+		x=find(x),y=find(y);
+		if(x!=y)
+			f[x]=y;
+	}
+	bool check(int x,int y)
+	{
+		return find(x)==find(y);
+	}
+};
+
+struct edge
+{
+	int u,v,w,a,b;
+};
+
+bool cmp(edge a,edge b)
+{
+	return a.w<b.w;
+}
+
+struct point
+{
+	int x,y;
+};
+point operator - (point a,point b)
+{
+	return (point){a.x-b.x,a.y-b.y};
+}
+int cross(point a,point b)
+{
+	return a.x*b.y-a.y*b.x;
+}
+
+int n,m;
+UFS s;
+point ans=point{inf,inf};
+edge e[M];
+
+point kk()
+{
+	point res=point{0,0};
+	int tot=0;
+	sort(e+1,e+1+m,cmp);
+	s.init(n);
+	for(int i=1;i<=m;++i)
+	{
+		int u=e[i].u,v=e[i].v,a=e[i].a,b=e[i].b;
+		if(s.check(u,v)) continue;
+		s.merge(u,v);
+		res.x+=a;
+		res.y+=b;
+		++tot;
+		if(tot==n-1) break;
+	}
+	ll tmp=1ll*ans.x*ans.y;
+	ll now=1ll*res.x*res.y;
+	if(tmp>now||(tmp==now&&ans.x>res.x))
+		ans=res;
+	return res;
+}
+
+void solve(point a,point b)
+{
+	for(int i=1;i<=m;++i)
+	{
+		e[i].w=e[i].b*(b.x-a.x)+e[i].a*(a.y-b.y);
+	}
+	point c=kk();
+	if(cross(b-a,c-a)>=0) return;
+	solve(a,c);
+	solve(c,b);
+}
+
+int main()
+{
+	scanf("%d%d",&n,&m);
+	for(int i=1;i<=m;++i)
+	{
+		scanf("%d%d%d%d",&e[i].u,&e[i].v,&e[i].a,&e[i].b);
+		e[i].u++;
+		e[i].v++;
+	}
+	for(int i=1;i<=m;++i)
+	{
+		e[i].w=e[i].a;
+	}
+	point a=kk();
+	for(int i=1;i<=m;++i)
+	{
+		e[i].w=e[i].b;
+	}
+	point b=kk();
+	solve(a,b);
+	printf("%d %d",ans.x,ans.y);
+	return 0;
+}
+\end{lstlisting}

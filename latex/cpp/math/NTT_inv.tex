@@ -1,5 +1,5 @@
 \begin{lstlisting}
-//Âå¹ÈP4238±¶ÔöÇóÄ£x^nµÄ¶àÏîÊ½£¬¼´Ïà³ËºóºöÂÔn´Î¼°¸ü¸ß´ÎÖ»Ê£1
+//æ´›è°·P4238å€å¢æ±‚æ¨¡x^nçš„å¤šé¡¹å¼ï¼Œå³ç›¸ä¹˜åå¿½ç•¥næ¬¡åŠæ›´é«˜æ¬¡åªå‰©1
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
@@ -26,13 +26,13 @@ int qpow(ll a, int b){
 inline int inv(ll value){ return qpow(value, P-2); }
 
 //namespace NTT{
-	int R[MN];	//01´®Äæ×ªºó¶ÔÓ¦µÄÏÂ±ê
-	void calcR(int len){	//¼ÆËãlen´Î¶àÏîÊ½µÄRÊı×é 
+	int R[MN];	//01ä¸²é€†è½¬åå¯¹åº”çš„ä¸‹æ ‡
+	void calcR(int len){	//è®¡ç®—lenæ¬¡å¤šé¡¹å¼çš„Ræ•°ç»„ 
 		int loglen = R[0] = 0;
 		while(1<<loglen < len) ++loglen;
 		for(int i=1; i<len; ++i) R[i] = (R[i>>1] >>1) | ((i&1)<< loglen-1);
 	}
-	void ntt(int *a, int n, int f=1){	//fÈ¡-1Ê±ÊÇÄæ±ä»»
+	void ntt(int *a, int n, int f=1){	//få–-1æ—¶æ˜¯é€†å˜æ¢
 		for(int i=0; i<n; ++i) if(R[i] < i) swap(a[i],a[R[i]]);
 		int baseW = qpow(G, (P-1) / n);
 		for(int len = 2; len <= n; len <<= 1){
@@ -54,7 +54,7 @@ inline int inv(ll value){ return qpow(value, P-2); }
 			for(int i=0; i<n; ++i) a[i] = ll(a[i]) * miv % P;
 		}
 	}
-	void mult(int *a, int *b, int len){	//len´Î¶àÏîÊ½³Ë·¨£¬´ğ°¸´æ½øa
+	void mult(int *a, int *b, int len){	//lenæ¬¡å¤šé¡¹å¼ä¹˜æ³•ï¼Œç­”æ¡ˆå­˜è¿›a
 		calcR(len);
 		ntt(a,len);
 		ntt(b,len);
@@ -66,13 +66,13 @@ inline int inv(ll value){ return qpow(value, P-2); }
 //}
 //using namespace NTT;
 
-int f[MN],g[MN],A[MN],B[MN];	//Êä³öÊäÈë¼°Æä¸±±¾
-int n;	//¶àÏîÊ½³¤¶È
+int f[MN],g[MN],A[MN],B[MN];	//è¾“å‡ºè¾“å…¥åŠå…¶å‰¯æœ¬
+int n;	//å¤šé¡¹å¼é•¿åº¦
 
-void inv(int *a, int *b, int len){	//·â×°ºÃµÄlen´Î¶àÏîÊ½ÇóÄæ£¬´ğ°¸´æ½øb
+void inv(int *a, int *b, int len){	//å°è£…å¥½çš„lenæ¬¡å¤šé¡¹å¼æ±‚é€†ï¼Œç­”æ¡ˆå­˜è¿›b
 	if(len==1) return b[0] = inv(ll(a[0])), void();
 	inv(a, b, len+1 >>1);
-	int LEN = 1;	//À©Õ¹µ½2µÄÕûÊı´ÎÃİµÄlen
+	int LEN = 1;	//æ‰©å±•åˆ°2çš„æ•´æ•°æ¬¡å¹‚çš„len
 	while(LEN < (len<<1)) LEN <<= 1;
 	calcR(LEN);
 	for(int i=0; i<len; ++i) A[i] = a[i];

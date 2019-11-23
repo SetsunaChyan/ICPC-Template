@@ -1,8 +1,8 @@
-$Pollard$ Éè¼ÆµÄÇó´óÊıÒò×Ó·½·¨£¬ÒòÎªËæ»úÕÒµÄÊı»áĞÎ³É»·ĞÎ£¬Òò´Ë³£³ÆÎª $\rho$ Ëã·¨
-´óÖÂÔ­ÀíÊÇËæ»úÕÒ¼¸¸öÊıÇó²î£¬ÈÃ²îÓë´óÊı $N$ Çó $gcd$ £¬¾İËµ¸´ÔÓ¶ÈÔ¼ $O(N^{1/4})$
-Ëæ»úÕÒÊıµÄ·½·¨¼û $rho$ º¯Êı¡£ÈôÒªÇóÖÊÒò×Ó£¬Ò»°ãĞèÒªÓÃÒ»ÏÂ $Miller Rabin$ ÅĞËØÊı
+$Pollard$ è®¾è®¡çš„æ±‚å¤§æ•°å› å­æ–¹æ³•ï¼Œå› ä¸ºéšæœºæ‰¾çš„æ•°ä¼šå½¢æˆç¯å½¢ï¼Œå› æ­¤å¸¸ç§°ä¸º $\rho$ ç®—æ³•
+å¤§è‡´åŸç†æ˜¯éšæœºæ‰¾å‡ ä¸ªæ•°æ±‚å·®ï¼Œè®©å·®ä¸å¤§æ•° $N$ æ±‚ $gcd$ ï¼Œæ®è¯´å¤æ‚åº¦çº¦ $O(N^{1/4})$
+éšæœºæ‰¾æ•°çš„æ–¹æ³•è§ $rho$ å‡½æ•°ã€‚è‹¥è¦æ±‚è´¨å› å­ï¼Œä¸€èˆ¬éœ€è¦ç”¨ä¸€ä¸‹ $Miller Rabin$ åˆ¤ç´ æ•°
 \begin{lstlisting}
-//Âå¹ÈP4718Çó×î´óÖÊÒò×Ó
+//æ´›è°·P4718æ±‚æœ€å¤§è´¨å› å­
 #include <cstdio>
 #include <cstdlib>
 #include <ctime>
@@ -13,9 +13,9 @@ typedef long long ll;
 typedef unsigned long long ull;
 typedef long double lb;
 
-ll m, ans;	//¶ÔÃ¿¸öm£¬½«Æä×î´óÖÊÒò×Ó´æ½øans
+ll m, ans;	//å¯¹æ¯ä¸ªmï¼Œå°†å…¶æœ€å¤§è´¨å› å­å­˜è¿›ans
 
-mt19937_64 rnd(time(0));	//c++11µÄstdµÄÄ§·¨£¬ÏÂÎÄ¿ÉÓÃrnd()Éú³É[0,2^64)
+mt19937_64 rnd(time(0));	//c++11çš„stdçš„é­”æ³•ï¼Œä¸‹æ–‡å¯ç”¨rnd()ç”Ÿæˆ[0,2^64)
 
 ll read(){
 	ll k=0; int f=1;
@@ -25,7 +25,7 @@ ll read(){
 	return k*f;
 }
 
-inline ll Abs(ll x){ return x<0 ? -x : x;}	//È¡¾ø¶ÔÖµ
+inline ll Abs(ll x){ return x<0 ? -x : x;}	//å–ç»å¯¹å€¼
 
 inline ll qmul(ull x, ull y, ll p){	//O(1)x*y%p
 	return (x*y - (ull)((lb)x/p*y)*p + p)%p;
@@ -38,10 +38,10 @@ inline ll qpow(ll x, ll y, ll p){	//x^y%p
 	return res;
 }
 
-inline bool MR(int tc, ll p){	//miller rabinÅĞÖÊÊı£¬ÓÃtc¼ì²âpÊÇ²»ÊÇÖÊÊı
-	if(qpow(tc,p-1,p)!=1) return 0;	//·ÑÂíĞ¡¶¨Àí
+inline bool MR(int tc, ll p){	//miller rabinåˆ¤è´¨æ•°ï¼Œç”¨tcæ£€æµ‹pæ˜¯ä¸æ˜¯è´¨æ•°
+	if(qpow(tc,p-1,p)!=1) return 0;	//è´¹é©¬å°å®šç†
 	ll y=p-1, z;
-	while(!(y&1)){	//¶ş´ÎÌ½²â
+	while(!(y&1)){	//äºŒæ¬¡æ¢æµ‹
 		y>>=1;
 		z=qpow(tc,y,p);
 		if(z!=1 && z!=p-1) return 0;
@@ -50,38 +50,38 @@ inline bool MR(int tc, ll p){	//miller rabinÅĞÖÊÊı£¬ÓÃtc¼ì²âpÊÇ²»ÊÇÖÊÊı
 	return 1;
 }
 
-inline bool isPrime(ll x){	//ÓÃ5¸öĞ¡ÖÊÊı×öMR²âÊÔ£¬·µ»ØnÊÇÖÊÊı?1:0
+inline bool isPrime(ll x){	//ç”¨5ä¸ªå°è´¨æ•°åšMRæµ‹è¯•ï¼Œè¿”å›næ˜¯è´¨æ•°?1:0
 	if(x<2) return 0;
     if(x==2 || x==3 || x==5 || x==7 || x==43) return 1;
     return MR(2,x) && MR(3,x) && MR(5,x) && MR(7,x) && MR(43,x);
 }
 
-inline ll rho(ll p){	//ĞşÑ§Çó³öpµÄ·ÇÆ½·²Òò×Ó
-	ll x,y,s,c;	//sÓÃÀ´´æ£¨y-x£©µÄ³Ë»ı
-	for(;;){	//Çó³öÒ»¸öÒò×ÓÀ´
+inline ll rho(ll p){	//ç„å­¦æ±‚å‡ºpçš„éå¹³å‡¡å› å­
+	ll x,y,s,c;	//sç”¨æ¥å­˜ï¼ˆy-xï¼‰çš„ä¹˜ç§¯
+	for(;;){	//æ±‚å‡ºä¸€ä¸ªå› å­æ¥
 		y=x=rnd()%p;
 		c=rnd()%p;
 		s=1;
 		int i=0, I=1;
-		while(++i){	//¿ªÊ¼ĞşÑ§±¶ÔöÉú³É
-			x=(qmul(x,x,p)+c)%p;	//ÒÔÆ½·½ÔÙ+cµÄ·½Ê½Éú³ÉÏÂÒ»¸öx
-			s=qmul(s,Abs(y-x),p);	//½«Ã¿Ò»´ÎµÄ£¨y-x£©¶¼ÀÛ³ËÆğÀ´
-			if(x==y || !s) break;	//»»ÏÂÒ»×é£¬µ±s=0Ê±£¬¼ÌĞøÏÂÈ¥ÊÇÃ»ÒâÒåµÄ
-			if(!(i%127) || i==I){	//Ã¿127´ÎÇóÒ»´Îgcd£¬ÒÔ¼°°´j±¶ÔöµÄÇógcd
+		while(++i){	//å¼€å§‹ç„å­¦å€å¢ç”Ÿæˆ
+			x=(qmul(x,x,p)+c)%p;	//ä»¥å¹³æ–¹å†+cçš„æ–¹å¼ç”Ÿæˆä¸‹ä¸€ä¸ªx
+			s=qmul(s,Abs(y-x),p);	//å°†æ¯ä¸€æ¬¡çš„ï¼ˆy-xï¼‰éƒ½ç´¯ä¹˜èµ·æ¥
+			if(x==y || !s) break;	//æ¢ä¸‹ä¸€ç»„ï¼Œå½“s=0æ—¶ï¼Œç»§ç»­ä¸‹å»æ˜¯æ²¡æ„ä¹‰çš„
+			if(!(i%127) || i==I){	//æ¯127æ¬¡æ±‚ä¸€æ¬¡gcdï¼Œä»¥åŠæŒ‰jå€å¢çš„æ±‚gcd
 				ll g=__gcd(s,p);
 				if(g>1)	return g;
-				if(i==I) y=x, I<<=1;	//Î¬»¤±¶ÔöÕıÈ·ĞÔ£¬²¢ÅĞ»·
+				if(i==I) y=x, I<<=1;	//ç»´æŠ¤å€å¢æ­£ç¡®æ€§ï¼Œå¹¶åˆ¤ç¯
 			}
 		}
 	}
 }
 
-inline void PR(ll p){	//ÕÒpµÄ×î´óÖÊÒò×Ó£¬´æ½øÈ«¾Ö±äÁ¿ans
-	if(p<=ans) return ;	//×îÓÅĞÔ¼ôÖ¦
+inline void PR(ll p){	//æ‰¾pçš„æœ€å¤§è´¨å› å­ï¼Œå­˜è¿›å…¨å±€å˜é‡ans
+	if(p<=ans) return ;	//æœ€ä¼˜æ€§å‰ªæ
 	if(isPrime(p)) return ans=p, void();
-	ll pi=rho(p);	//ĞşÑ§Çó³öÈÎÒ»Òò×Óp_i
+	ll pi=rho(p);	//ç„å­¦æ±‚å‡ºä»»ä¸€å› å­p_i
 	while(p%pi==0) p/=pi;
-	return PR(pi), PR(p);	//ÏòÏÂ·ÖÖÎ
+	return PR(pi), PR(p);	//å‘ä¸‹åˆ†æ²»
 }
 
 int main(){
