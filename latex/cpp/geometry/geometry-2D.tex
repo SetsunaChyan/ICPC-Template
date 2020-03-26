@@ -145,6 +145,20 @@ int contain(vector<P> ps,P p) //2:inside,1:on_seg,0:outside
     return ret*2;
 }
 
+int convexContain(vector<P> &ps,P p) //1:inside|on_seg,0:outside
+{
+    int n=ps.size(),l=1,r=n-1,mid;
+    while(l<r)
+    {
+        mid=(l+r+1)>>1;
+        if(sign(cross(ps[0],ps[mid],p))<0) r=mid-1; else l=mid;
+    }
+    if(l==1&&sign(cross(ps[0],ps[1],p))<0) return 0;
+    if(l==n-1&&onSeg(ps[0],ps[n-1],p)) return 1;
+    if(l!=n-1&&sign(cross(ps[l],ps[l+1],p))>=0) return 1;
+    return 0;
+}
+
 vector<P> convexHull(vector<P> ps)
 {
     int n=ps.size();if(n<=1) return ps;

@@ -12,6 +12,7 @@ void init() //将每两个字符中插入一个字符
     ss[0]='!',ss[cnt]='#';
     for(int i=0;i<len;i++)
         ss[++cnt]=s[i],ss[++cnt]='#';
+	ss[cnt+1]=0; //这一步多组一定要有 血一样的教训...
 }
 
 void manacher()
