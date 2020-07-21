@@ -1,0 +1,27 @@
+\begin{lstlisting}
+/*
+    S是Lyndon串 iff S<S[i:] holds for 0<i<|S|
+    s1,s2,...,sn是S的Lyndon分解有S=s1s2...sn且s1>=s2>=...>=sn
+    输入串 s[0..n-1]
+    获得分解后Lyndon子串的右端点下标
+    例如 acadacadac -> [3,7,9]
+*/
+
+char s[1024*1024+5];
+vector<int> pos;
+
+void LyndonFactorization(char s[])
+{
+    int n=strlen(s),i=0,j,k;
+    while(i<n)
+    {
+        j=i,k=i+1;
+        while(k<n&&s[j]<=s[k])
+        {
+            if(s[j]==s[k]) j++; else j=i;
+            k++;
+        }
+        while(i<=j) i+=k-j,pos.push_back(i-1);
+    }
+}
+\end{lstlisting}
