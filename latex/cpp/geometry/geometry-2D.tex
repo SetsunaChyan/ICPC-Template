@@ -39,6 +39,12 @@ struct P
     P rot(db an){return {x*cos(an)-y*sin(an),x*sin(an)+y*cos(an)};}
 };
 
+int compareAngle(P a,P b)
+{
+    if(a.quad()!=b.quad()) return a.quad()<b.quad();
+    return sign(a.det(b))>0;
+}
+
 //For segment
 #define cross(p1,p2,p3) ((p2.x-p1.x)*(p3.y-p1.y)-(p3.x-p1.x)*(p2.y-p1.y))
 #define crossOp(p1,p2,p3) sign(cross(p1,p2,p3))
@@ -184,6 +190,52 @@ db convexDiameter(vector<P> ps)
         else (++i)%=n;
         ret=max(ret,ps[i].distTo(ps[j]));
     }while(i!=is||j!=js);
+    return ret;
+}
+
+struct L // p[0]->p[1]
+{
+    P p[2];
+    L(P k1,P k2){p[0]=k1,p[1]=k2;}
+    P& operator [] (int k){return p[k];}
+    int include(P k){return sign((p[1]-p[0]).det(k-p[0]))>0;}
+    P dir(){return p[1]-p[0];}
+    L push(db dis) // push dis (left hand)
+    {
+        P delta=(p[1]-p[0]).rot90().unit()*dis;
+        return {p[0]+delta,p[1]+delta};
+    }
+};
+
+bool parallel(L l0,L l1){return sign(l0.dir().det(l1.dir()))==0;}
+
+bool sameDir(L l0,L l1){return parallel(l0,l1)&&sign(l0.dir().dot(l1.dir()))==1;}
+
+bool operator < (L l0,L l1)
+{
+    if(sameDir(l0,l1)) return l1.include(l0[0]);
+    return compareAngle(l0.dir(),l1.dir());
+}
+
+P isLL(L l0,L l1){return isLL(l0[0],l0[1],l1[0],l1[1]);}
+
+bool check(L u,L v,L w){return w.include(isLL(u,v));}
+
+vector<P> halfPlaneIS(vector<L> &l)
+{
+    sort(l.begin(),l.end());
+    deque<L> q;
+    for(int i=0;i<(int)l.size();i++)
+    {
+        if(i&&sameDir(l[i],l[i-1])) continue;
+        while(q.size()>1&&!check(q[q.size()-2],q[q.size()-1],l[i])) q.pop_back();
+        while(q.size()>1&&!check(q[1],q[0],l[i])) q.pop_front();
+        q.push_back(l[i]);
+    }
+    while(q.size()>2&&!check(q[q.size()-2],q[q.size()-1],q[0])) q.pop_back();
+    while(q.size()>2&&!check(q[1],q[0],q[q.size()-1])) q.pop_front();
+    vector<P> ret;
+    for(int i=0;i<(int)q.size();i++) ret.push_back(isLL(q[i],q[(i+1)%q.size()]));
     return ret;
 }
 \end{lstlisting}
