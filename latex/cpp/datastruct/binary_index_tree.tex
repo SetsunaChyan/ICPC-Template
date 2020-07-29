@@ -1,0 +1,27 @@
+\begin{lstlisting}
+int bit[N];
+
+void modify(int x,int y)
+{
+	for(;x<=n;x+=x&-x) bit[x]+=y;
+}
+
+int sum(int x)
+{
+    int ret=0;
+	for(;x;x-=x&-x) ret+=bit[x];
+    return ret;
+}
+
+int kth(int k) // 权值树状数组上查询第 k 大
+{
+    int cnt=0,ret=0;
+    for(int i=log2(n);~i;i--)
+    {
+        ret+=1<<i;
+        if(ret>=n||cnt+bit[ret]>=k) ret-=1<<i;
+        else cnt+=bit[ret];
+    }
+    return ret+1;
+}
+\end{lstlisting}

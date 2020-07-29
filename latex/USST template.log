@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999992 (TeX Live 2020/W32TeX) (preloaded format=xelatex 2020.5.8)  21 JUL 2020 21:29
+This is XeTeX, Version 3.14159265-2.6-0.999992 (TeX Live 2020/W32TeX) (preloaded format=xelatex 2020.5.8)  29 JUL 2020 14:58
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -653,38 +653,42 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 )
-(./cpp/datastruct/lichao_seg.tex
+(./cpp/datastruct/binary_index_tree.tex
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [19])
-(./cpp/datastruct/minSeg.tex [20]
+(./cpp/datastruct/lichao_seg.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [20])
+(./cpp/datastruct/minSeg.tex) (./cpp/datastruct/scanline.tex [21]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 )
-(./cpp/datastruct/scanline.tex [21]) (./cpp/datastruct/interval_dij.tex
+(./cpp/datastruct/interval_dij.tex [22]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [22])
+)
 (./cpp/datastruct/ST.tex) (./cpp/datastruct/heavy_light_decomposition.tex
 [23]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-)
-(./cpp/datastruct/treap.tex [24]
+
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-
+ [24])
+(./cpp/datastruct/treap.tex
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [25]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 )
-(./cpp/datastruct/rbt_pbds.tex) (./cpp/datastruct/perSeg.tex [26])
-(./cpp/datastruct/seg_treap.tex
+(./cpp/datastruct/rbt_pbds.tex) (./cpp/datastruct/perSeg.tex [26]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [27]
+)
+(./cpp/datastruct/seg_treap.tex [27]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
@@ -694,21 +698,22 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 )
-(./cpp/datastruct/fenwick_seg.tex [29]) (./cpp/datastruct/kdtree.tex)
-(./cpp/datastruct/cdq_strictly.tex [30]) (./cpp/datastruct/cdq.tex
+(./cpp/datastruct/fenwick_seg.tex [29]) (./cpp/datastruct/kdtree.tex
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [31])
-(./cpp/datastruct/dsu_on_tree.tex) (./cpp/datastruct/block.tex [32])
-(./cpp/datastruct/motao.tex) (./cpp/datastruct/linear_base.tex [33])
-(./cpp/datastruct/chtholly.tex
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [34]
+ [30])
+(./cpp/datastruct/cdq_strictly.tex) (./cpp/datastruct/cdq.tex [31])
+(./cpp/datastruct/dsu_on_tree.tex) (./cpp/datastruct/block.tex [32]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 )
-(./cpp/dp/SOS.tex) (./cpp/math/tripartition.tex) (./cpp/math/Miller-Rabin.tex
+(./cpp/datastruct/motao.tex [33]) (./cpp/datastruct/linear_base.tex)
+(./cpp/datastruct/chtholly.tex [34]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+)
+(./cpp/dp/SOS.tex) (./cpp/math/tripartition.tex [35])
+(./cpp/math/Miller-Rabin.tex
 Missing character: There is no 二 in font [lmroman9-regular]:mapping=tex-text;!
 Missing character: There is no 次 in font [lmroman9-regular]:mapping=tex-text;!
 Missing character: There is no 探 in font [lmroman9-regular]:mapping=tex-text;!
@@ -718,8 +723,6 @@ Missing character: There is no 是 in font [lmroman9-regular]:mapping=tex-text;!
 Missing character: There is no 质 in font [lmroman9-regular]:mapping=tex-text;!
 Missing character: There is no 数 in font [lmroman9-regular]:mapping=tex-text;!
 Missing character: There is no 或 in font [lmroman9-regular]:mapping=tex-text;!
-
-[35]
 Missing character: There is no 费 in font [lmroman9-regular]:mapping=tex-text;!
 Missing character: There is no 马 in font [lmroman9-regular]:mapping=tex-text;!
 Missing character: There is no 探 in font [lmroman9-regular]:mapping=tex-text;!
@@ -735,13 +738,16 @@ Missing character: There is no 次 in font [lmroman9-regular]:mapping=tex-text;!
 Missing character: There is no 数 in font [lmroman9-regular]:mapping=tex-text;!
 Missing character: There is no （ in font [lmroman9-regular]:mapping=tex-text;!
 Missing character: There is no ） in font [lmroman9-regular]:mapping=tex-text;!
-) (./cpp/math/Pollard-rho.tex [36]) (./cpp/math/EXGCD_INV.tex)
-(./cpp/math/EXEuler.tex [37])
+) (./cpp/math/Pollard-rho.tex [36]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+)
+(./cpp/math/EXGCD_INV.tex) (./cpp/math/EXEuler.tex [37])
 Missing character: There is no ​ in font [lmroman9-regular]:mapping=tex-text;!
 Missing character: There is no ​ in font [lmroman9-regular]:mapping=tex-text;!
 Missing character: There is no ​ in font [lmroman9-regular]:mapping=tex-text;!
- (./cpp/math/EXCRT.tex)
-(./cpp/math/Quadratic_residue.tex [38]) (./cpp/math/EXBSGS.tex
+ (./cpp/math/EXCRT.tex
+[38]) (./cpp/math/Quadratic_residue.tex) (./cpp/math/EXBSGS.tex
 Underfull \hbox (badness 1377) in paragraph at lines 1--4
 \TU/FandolSong-Regular(0)/m/n/9 求 解 $\OML/cmm/m/it/9 a[][]  p \OT1/cmr/m/n/9 = 
 \OML/cmm/m/it/9 b$ \TU/FandolSong-Regular(0)/m/n/9 ：|  当 \TU/FandolSong-Regular
@@ -749,32 +755,29 @@ Underfull \hbox (badness 1377) in paragraph at lines 1--4
 dolSong-Regular(0)/m/n/9 时 可 直 接 使 用
  []
 
-
+[39])
+Missing character: There is no ​ in font [lmroman9-regular]:mapping=tex-text;!
+Missing character: There is no ​ in font [lmroman9-regular]:mapping=tex-text;!
+ (./cpp/math/FFT.tex
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [39])
+ [40])
+(./cpp/math/FFT_2.tex)
 Missing character: There is no ​ in font [lmroman9-regular]:mapping=tex-text;!
 Missing character: There is no ​ in font [lmroman9-regular]:mapping=tex-text;!
-
-(./cpp/math/FFT.tex) (./cpp/math/FFT_2.tex [40]
+ (./cpp/math/NTT.tex [41]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 )
-Missing character: There is no ​ in font [lmroman9-regular]:mapping=tex-text;!
-Missing character: There is no ​ in font [lmroman9-regular]:mapping=tex-text;!
-
-(./cpp/math/NTT.tex [41]) (./cpp/math/NTT_cdq.tex
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [42])
-(./cpp/math/NTT_inv.tex
+(./cpp/math/NTT_cdq.tex [42]) (./cpp/math/NTT_inv.tex
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [43])
-(./cpp/math/adaptive_simpson.tex) (./cpp/math/contor.tex)
+(./cpp/math/adaptive_simpson.tex) (./cpp/math/contor.tex [44])
 Missing character: There is no ​ in font [lmroman9-regular]:mapping=tex-text;!
 Missing character: There is no ​ in font [lmroman9-regular]:mapping=tex-text;!
- (./cpp/math/Lucas.tex [44])
+
+(./cpp/math/Lucas.tex)
 Missing character: There is no ​ in font [lmroman9-regular]:mapping=tex-text;!
 Missing character: There is no ​ in font [lmroman9-regular]:mapping=tex-text;!
  (./cpp/math/EXLucas.tex [45]) (./cpp/math/SG.tex)
@@ -804,10 +807,10 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
 ] (./USST template.aux) ) 
 Here is how much of TeX's memory you used:
- 10027 strings out of 479488
- 228920 string characters out of 5889089
- 1264624 words of memory out of 5000000
- 27132 multiletter control sequences out of 15000+600000
+ 10031 strings out of 479488
+ 229043 string characters out of 5889089
+ 1217624 words of memory out of 5000000
+ 27133 multiletter control sequences out of 15000+600000
  537504 words of font info for 90 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  50i,12n,79p,309b,1718s stack positions out of 5000i,500n,10000p,200000b,80000s

@@ -55,7 +55,7 @@
 \contentsline {subsection}{\numberline {4.2}线段树}{20}%
 \contentsline {subsubsection}{\numberline {4.2.1}带优先级线段树}{20}%
 \contentsline {subsubsection}{\numberline {4.2.2}李超线段树}{20}%
-\contentsline {subsubsection}{\numberline {4.2.3}吉司机线段树}{20}%
+\contentsline {subsubsection}{\numberline {4.2.3}吉司机线段树}{21}%
 \contentsline {subsubsection}{\numberline {4.2.4}线段树维护扫描线}{21}%
 \contentsline {subsubsection}{\numberline {4.2.5}区间图}{22}%
 \contentsline {subsection}{\numberline {4.3}RMQ}{23}%
@@ -63,9 +63,9 @@
 \contentsline {subsubsection}{\numberline {4.3.2}两维}{23}%
 \contentsline {subsection}{\numberline {4.4}树链剖分}{23}%
 \contentsline {subsubsection}{\numberline {4.4.1}点剖分}{23}%
-\contentsline {subsubsection}{\numberline {4.4.2}边剖分}{24}%
-\contentsline {subsection}{\numberline {4.5}平衡树}{24}%
-\contentsline {subsubsection}{\numberline {4.5.1}Treap}{24}%
+\contentsline {subsubsection}{\numberline {4.4.2}边剖分}{25}%
+\contentsline {subsection}{\numberline {4.5}平衡树}{25}%
+\contentsline {subsubsection}{\numberline {4.5.1}Treap}{25}%
 \contentsline {subsubsection}{\numberline {4.5.2}Splay}{26}%
 \contentsline {subsubsection}{\numberline {4.5.3}红黑树-pbds}{26}%
 \contentsline {subsection}{\numberline {4.6}动态树}{26}%
@@ -74,15 +74,15 @@
 \contentsline {subsubsection}{\numberline {4.8.1}线段树套Treap}{27}%
 \contentsline {subsubsection}{\numberline {4.8.2}树状数组套线段树}{29}%
 \contentsline {subsection}{\numberline {4.9}K-D Tree}{30}%
-\contentsline {subsection}{\numberline {4.10}分治}{30}%
-\contentsline {subsubsection}{\numberline {4.10.1}CDQ}{30}%
+\contentsline {subsection}{\numberline {4.10}分治}{31}%
+\contentsline {subsubsection}{\numberline {4.10.1}CDQ}{31}%
 \contentsline {subsubsection}{\numberline {4.10.2}点分治}{32}%
 \contentsline {subsubsection}{\numberline {4.10.3}dsu on tree}{32}%
 \contentsline {subsubsection}{\numberline {4.10.4}整体二分}{32}%
 \contentsline {subsection}{\numberline {4.11}分块}{32}%
 \contentsline {subsubsection}{\numberline {4.11.1}普通分块}{32}%
 \contentsline {subsubsection}{\numberline {4.11.2}莫队}{33}%
-\contentsline {subsection}{\numberline {4.12}线性基}{33}%
+\contentsline {subsection}{\numberline {4.12}线性基}{34}%
 \contentsline {subsection}{\numberline {4.13}珂朵莉树}{34}%
 \contentsline {subsection}{\numberline {4.14}跳舞链}{35}%
 \contentsline {section}{\numberline {5}动态规划}{35}%
@@ -112,8 +112,8 @@
 \contentsline {subsection}{\numberline {6.9}同余方程组}{38}%
 \contentsline {subsubsection}{\numberline {6.9.1}CRT}{38}%
 \contentsline {subsubsection}{\numberline {6.9.2}EXCRT}{38}%
-\contentsline {subsection}{\numberline {6.10}N次剩余}{38}%
-\contentsline {subsubsection}{\numberline {6.10.1}模奇质数的2次剩余}{38}%
+\contentsline {subsection}{\numberline {6.10}N次剩余}{39}%
+\contentsline {subsubsection}{\numberline {6.10.1}模奇质数的2次剩余}{39}%
 \contentsline {subsubsection}{\numberline {6.10.2}N次剩余}{39}%
 \contentsline {subsection}{\numberline {6.11}数论分块}{39}%
 \contentsline {subsection}{\numberline {6.12}高斯消元}{39}%
@@ -127,7 +127,7 @@
 \contentsline {subsection}{\numberline {6.14}BSGS}{39}%
 \contentsline {subsection}{\numberline {6.15}FFT}{40}%
 \contentsline {subsection}{\numberline {6.16}FFT}{40}%
-\contentsline {subsection}{\numberline {6.17}DFT次数优化FFT}{40}%
+\contentsline {subsection}{\numberline {6.17}DFT次数优化FFT}{41}%
 \contentsline {subsection}{\numberline {6.18}FWT}{41}%
 \contentsline {subsection}{\numberline {6.19}NTT}{41}%
 \contentsline {subsection}{\numberline {6.20}NTT}{41}%
@@ -137,8 +137,8 @@
 \contentsline {subsubsection}{\numberline {6.23.1}辛普森}{44}%
 \contentsline {subsubsection}{\numberline {6.23.2}自适应辛普森}{44}%
 \contentsline {subsection}{\numberline {6.24}康拓展开}{44}%
-\contentsline {subsection}{\numberline {6.25}卢卡斯定理}{44}%
-\contentsline {subsubsection}{\numberline {6.25.1}Lucas(循环或递归实现)}{44}%
+\contentsline {subsection}{\numberline {6.25}卢卡斯定理}{45}%
+\contentsline {subsubsection}{\numberline {6.25.1}Lucas(循环或递归实现)}{45}%
 \contentsline {subsubsection}{\numberline {6.25.2}EXLucas(分块实现)}{45}%
 \contentsline {subsection}{\numberline {6.26}博弈论}{46}%
 \contentsline {subsubsection}{\numberline {6.26.1}SG函数}{46}%
