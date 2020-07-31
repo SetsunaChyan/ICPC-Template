@@ -1,0 +1,92 @@
+\begin{lstlisting}
+#include <bits/stdc++.h>
+using namespace std;
+
+/*
+    HopcroftCarp求最大匹配
+    复杂度 O(m*sqrt(n)) 其中m为边数,n为点数
+    点编号1~n 边编号1~m 默认左右编号大小都是n
+    注意多组要调用 cls 清空
+    结构体内n是局部变量也要重新赋值
+*/
+
+const int MAXN=505;
+const int MAXM=5e4+5;
+
+struct HopcroftCarp
+{
+    struct edge
+    {
+        int from,to;
+        int other(int x){return from^to^x;}
+    }e[MAXM];
+    vector<int> V[MAXN],unmatched,E[MAXN];
+    int matchLeft[MAXN],matchRight[MAXN],d[MAXN],ansRight[MAXN],n,m;
+    bool was[MAXN],found;
+    void add_edge(int x,int y){m++,e[m].from=x,e[m].to=y;}
+    void cls(){m=0;} // 清空边 多组必调用
+    void init()
+    {
+        for(int i=1;i<=n;i++) V[i].clear();
+        for(int i=1;i<=m;i++) V[e[i].from].push_back(i),E[e[i].from].push_back(e[i].to);
+        for(int i=0;i<=n;i++) matchLeft[i]=matchRight[i]=ansRight[i]=0;
+        unmatched.resize(n);
+        for(int i=0;i<n;i++) unmatched[i]=i+1;
+    }
+    void dfs(int u)
+    {
+        for(auto id:V[u])
+        {
+            int v=e[id].other(u);
+            if(matchRight[v]==0) found=true;
+            else
+            {
+                if(was[v]) continue;
+                was[v]=true,dfs(matchRight[v]);
+            }
+            if(found)
+            {
+                matchLeft[u]=v,matchRight[v]=u;
+                return;
+            }
+        }
+    }
+    int run()
+    {
+        init();
+        while(true)
+        {
+            for(int i=0;i<=n;i++) was[i]=false;
+            int lastSz=unmatched.size();
+            for(int i=int(unmatched.size())-1;i>=0;i--)
+            {
+                int u=unmatched[i];
+                found=false;
+                dfs(u);
+                if(found)
+                    swap(unmatched.back(),unmatched[i]),unmatched.pop_back();
+            }
+            if(unmatched.size()==lastSz) break;
+        }
+        return n-unmatched.size();
+    }
+};
+
+int n,m,e; // 这里的n,m,e分别表示左部点,右部点数和边数
+HopcroftCarp hc;
+
+int main()
+{
+    hc.cls();
+    scanf("%d%d%d",&n,&m,&e);
+    hc.n=max(n,m);
+    while(e--)
+    {
+        int x,y;
+        scanf("%d%d",&x,&y);
+        hc.add_edge(x,y);
+    }
+    printf("%d\n",hc.run());
+    return 0;
+}
+\end{lstlisting}
