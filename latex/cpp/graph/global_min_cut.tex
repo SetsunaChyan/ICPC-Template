@@ -1,0 +1,61 @@
+\begin{lstlisting}
+#include <bits/stdc++.h>
+using namespace std;
+
+/*
+    HDU3691
+    无向联通图的全局最小割 复杂度O(n^3)
+    1. 类似MST一样扩展，权值为当前边权和
+    2. 设加入MST的最后两个点为s,t s-t最小割为t的边权和 更新答案
+    3. 合并s,t 返回第一步
+*/
+
+const int N=305;
+int n,m,e[N][N],vis[N],wage[N];
+
+int GlobalMinCut()
+{
+    int lst,mxid,ret=0x3f3f3f3f;
+    vector<int> ver;
+    for(int i=1;i<=n;i++) ver.push_back(i);
+    for(int sz=n;sz>1;sz--)
+    {
+        for(auto i:ver) vis[i]=0,wage[i]=0;
+        vis[lst=1]=1;
+        for(int i=0;i<sz-1;i++)
+        {
+            for(auto j:ver) if(!vis[j]&&e[lst][j])
+                wage[j]+=e[lst][j];
+            mxid=1;
+            for(auto j:ver) if(!vis[j]&&wage[j]>=wage[mxid])
+                mxid=j;
+            if(i==sz-2)
+            {
+                ret=min(ret,wage[mxid]);
+                ver.erase(lower_bound(ver.begin(),ver.end(),mxid));
+                for(auto j:ver) e[lst][j]=e[j][lst]+=e[mxid][j];
+            }
+            vis[mxid]=1;
+            lst=mxid;
+        }
+    }
+    return ret;
+}
+
+int main()
+{
+    while(scanf("%d%d%*d",&n,&m)&&n)
+    {
+        for(int i=1;i<=n;i++)
+            for(int j=1;j<=n;j++)
+                e[i][j]=0;
+        for(int i=0,x,y,w;i<m;i++)
+        {
+            scanf("%d%d%d",&x,&y,&w);
+            e[x][y]+=w,e[y][x]+=w;
+        }
+        printf("%d\n",GlobalMinCut());
+    }
+    return 0;
+}
+\end{lstlisting}
